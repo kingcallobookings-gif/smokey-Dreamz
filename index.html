@@ -1,0 +1,330 @@
+<!doctype html>
+<html lang="en-ZA">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Smokey Dreamz | Private Cannabis Club, South Africa</title>
+  <meta name="description" content="Smokey Dreamz is a private, members-only cannabis club in South Africa. Craft-grown flower, edibles and accessories for adults 18+." />
+  <meta name="theme-color" content="#0d0a1a" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml" />
+</head>
+<body class="locked">
+
+  <!-- ============ AGE GATE ============ -->
+  <div class="age-gate" id="ageGate" role="dialog" aria-modal="true" aria-labelledby="ageTitle">
+    <div class="age-card">
+      <div class="logo-mark big" aria-hidden="true">SD</div>
+      <h2 id="ageTitle">Are you 18 or older?</h2>
+      <p>Smokey Dreamz is a private club for adults. You need to be 18 or older to enter this site.</p>
+      <div class="age-actions">
+        <button class="btn btn-primary" id="ageYes">Yes, I'm 18+</button>
+        <button class="btn btn-ghost" id="ageNo">No</button>
+      </div>
+      <p class="age-denied" id="ageDenied" hidden>Sorry, you need to be 18 or older to visit. Come back when you're older.</p>
+    </div>
+  </div>
+
+  <!-- ============ HEADER ============ -->
+  <header class="site-header" id="top">
+    <a href="#top" class="brand">
+      <span class="logo-mark" aria-hidden="true">SD</span>
+      <span class="brand-name">Smokey <em>Dreamz</em></span>
+    </a>
+    <nav class="nav" id="nav" aria-label="Main">
+      <a href="#about">About</a>
+      <a href="#menu">Menu</a>
+      <a href="#membership">Membership</a>
+      <a href="#visit">Visit</a>
+      <a href="#faq">FAQ</a>
+      <a href="#join" class="btn btn-primary btn-sm">Join the club</a>
+    </nav>
+    <button class="nav-toggle" id="navToggle" aria-label="Open menu" aria-expanded="false" aria-controls="nav">
+      <span></span><span></span><span></span>
+    </button>
+  </header>
+
+  <main>
+    <!-- ============ HERO ============ -->
+    <section class="hero">
+      <div class="smoke" aria-hidden="true">
+        <span></span><span></span><span></span><span></span>
+      </div>
+      <canvas id="particles" aria-hidden="true"></canvas>
+      <div class="hero-inner">
+        <p class="eyebrow">Private members' cannabis club · South Africa</p>
+        <h1>Drift into <span class="glow">something</span> better.</h1>
+        <p class="lead">Craft-grown flower, house-made edibles and good company. Smokey Dreamz is a members-only club for adults who care where their cannabis comes from.</p>
+        <div class="hero-cta">
+          <a href="#join" class="btn btn-primary">Become a member</a>
+          <a href="#menu" class="btn btn-ghost">See the menu</a>
+        </div>
+        <ul class="hero-stats">
+          <li><strong>18+</strong><span>Members only</span></li>
+          <li><strong>Craft</strong><span>Small-batch grown</span></li>
+          <li><strong>Local</strong><span>Proudly South African</span></li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- ============ ABOUT ============ -->
+    <section class="section" id="about">
+      <div class="container two-col">
+        <div>
+          <p class="eyebrow">About us</p>
+          <h2>Born from smoke. Grown with care.</h2>
+          <p>Smokey Dreamz started with a simple idea: a safe, relaxed space where adults can enjoy quality cannabis without the guesswork. Every strain on our shelf is grown in small batches, cured slowly and checked before it reaches a member.</p>
+          <p>We're a private club, not a shop. That means members only, a real community, and a team that knows every plant by name.</p>
+        </div>
+        <div class="feature-grid">
+          <article class="feature">
+            <div class="icon" aria-hidden="true">🌱</div>
+            <h3>Small-batch grown</h3>
+            <p>Cultivated with care, hand-trimmed and slow-cured.</p>
+          </article>
+          <article class="feature">
+            <div class="icon" aria-hidden="true">🔬</div>
+            <h3>Quality checked</h3>
+            <p>We know what's in every jar: strain, profile and potency.</p>
+          </article>
+          <article class="feature">
+            <div class="icon" aria-hidden="true">🛋️</div>
+            <h3>Chill lounge</h3>
+            <p>A private space for members to unwind and connect.</p>
+          </article>
+          <article class="feature">
+            <div class="icon" aria-hidden="true">🤝</div>
+            <h3>Real community</h3>
+            <p>Events, strain drops and people who get it.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ MENU ============ -->
+    <section class="section section-alt" id="menu">
+      <div class="container">
+        <div class="section-head">
+          <p class="eyebrow">The menu</p>
+          <h2>What's in the jars</h2>
+          <p>Available to registered members only. Contributions go toward cultivation and club costs.</p>
+        </div>
+
+        <div class="filters" role="tablist" aria-label="Filter menu">
+          <button class="chip active" data-filter="all" role="tab" aria-selected="true">All</button>
+          <button class="chip" data-filter="indica" role="tab" aria-selected="false">Indica</button>
+          <button class="chip" data-filter="sativa" role="tab" aria-selected="false">Sativa</button>
+          <button class="chip" data-filter="hybrid" role="tab" aria-selected="false">Hybrid</button>
+          <button class="chip" data-filter="edible" role="tab" aria-selected="false">Edibles</button>
+          <button class="chip" data-filter="gear" role="tab" aria-selected="false">Gear</button>
+        </div>
+
+        <div class="menu-grid" id="menuGrid" aria-live="polite"></div>
+        <p class="note">Menu changes with every harvest. Ask the team what's fresh this week.</p>
+      </div>
+    </section>
+
+    <!-- ============ MEMBERSHIP ============ -->
+    <section class="section" id="membership">
+      <div class="container">
+        <div class="section-head">
+          <p class="eyebrow">Membership</p>
+          <h2>How the club works</h2>
+        </div>
+        <ol class="steps">
+          <li>
+            <span class="step-num">01</span>
+            <h3>Apply</h3>
+            <p>Fill in the form below. You'll need to be 18+ and a South African resident or valid visa holder.</p>
+          </li>
+          <li>
+            <span class="step-num">02</span>
+            <h3>Verify</h3>
+            <p>Bring your ID on your first visit so we can confirm your age and sign you in.</p>
+          </li>
+          <li>
+            <span class="step-num">03</span>
+            <h3>Enjoy</h3>
+            <p>Access the menu, the lounge, member events and first look at new strain drops.</p>
+          </li>
+        </ol>
+
+        <div class="tiers">
+          <article class="tier">
+            <h3>Dreamer</h3>
+            <p class="tier-price">R150<span>/month</span></p>
+            <ul>
+              <li>Full menu access</li>
+              <li>Lounge access</li>
+              <li>Member newsletter</li>
+            </ul>
+            <a href="#join" class="btn btn-ghost">Choose Dreamer</a>
+          </article>
+          <article class="tier featured">
+            <span class="badge">Most popular</span>
+            <h3>Cloud Nine</h3>
+            <p class="tier-price">R350<span>/month</span></p>
+            <ul>
+              <li>Everything in Dreamer</li>
+              <li>10% off all contributions</li>
+              <li>Early access to new drops</li>
+              <li>Free entry to events</li>
+            </ul>
+            <a href="#join" class="btn btn-primary">Choose Cloud Nine</a>
+          </article>
+          <article class="tier">
+            <h3>Head in the Clouds</h3>
+            <p class="tier-price">R3 500<span>/year</span></p>
+            <ul>
+              <li>Everything in Cloud Nine</li>
+              <li>Two months free</li>
+              <li>Monthly members' gift</li>
+            </ul>
+            <a href="#join" class="btn btn-ghost">Choose yearly</a>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ VISIT ============ -->
+    <section class="section section-alt" id="visit">
+      <div class="container two-col">
+        <div>
+          <p class="eyebrow">Visit us</p>
+          <h2>Find the club</h2>
+          <p class="placeholder-note">📍 Address, hours and contact details are placeholders. Swap in the real ones.</p>
+          <dl class="info">
+            <div><dt>Address</dt><dd>123 Example Street, Your Suburb, City, 0000</dd></div>
+            <div><dt>Phone / WhatsApp</dt><dd><a href="https://wa.me/27000000000">+27 00 000 0000</a></dd></div>
+            <div><dt>Email</dt><dd><a href="mailto:hello@smokeydreamz.co.za">hello@smokeydreamz.co.za</a></dd></div>
+          </dl>
+          <table class="hours">
+            <caption>Opening hours</caption>
+            <tbody>
+              <tr><th scope="row">Mon – Thu</th><td>10:00 – 20:00</td></tr>
+              <tr><th scope="row">Fri – Sat</th><td>10:00 – 22:00</td></tr>
+              <tr><th scope="row">Sunday</th><td>11:00 – 18:00</td></tr>
+              <tr><th scope="row">Public holidays</th><td>11:00 – 17:00</td></tr>
+            </tbody>
+          </table>
+          <p class="open-status" id="openStatus"></p>
+        </div>
+        <div class="map-card">
+          <iframe
+            title="Map showing the Smokey Dreamz location"
+            src="https://www.openstreetmap.org/export/embed.html?bbox=18.35%2C-34.0%2C18.55%2C-33.88&amp;layer=mapnik"
+            loading="lazy"></iframe>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ FAQ ============ -->
+    <section class="section" id="faq">
+      <div class="container narrow">
+        <div class="section-head">
+          <p class="eyebrow">FAQ</p>
+          <h2>Good questions</h2>
+        </div>
+        <div class="faq">
+          <details>
+            <summary>Is this legal?</summary>
+            <p>Under the Cannabis for Private Purposes Act, 2024, adults may use, possess and grow cannabis for private purposes. Smokey Dreamz operates as a private members' club: we don't sell to the public, and only registered adult members can take part. The law in this area is still developing, and we follow it closely.</p>
+          </details>
+          <details>
+            <summary>Can I just walk in and buy something?</summary>
+            <p>No. We're a private club, so you need to be a registered member first. Applying takes a few minutes, and you can finish signing up on your first visit with your ID.</p>
+          </details>
+          <details>
+            <summary>What do I need to bring?</summary>
+            <p>A valid South African ID, driver's licence or passport. We check the age of every member.</p>
+          </details>
+          <details>
+            <summary>Do you deliver?</summary>
+            <p>Not at the moment. Members collect in person at the club.</p>
+          </details>
+          <details>
+            <summary>Can I smoke in public afterwards?</summary>
+            <p>No. Smoking cannabis in public, or around children, is not allowed. Please enjoy responsibly, in private, and never drive under the influence.</p>
+          </details>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ JOIN ============ -->
+    <section class="section section-join" id="join">
+      <div class="container narrow">
+        <div class="section-head">
+          <p class="eyebrow">Join the club</p>
+          <h2>Apply for membership</h2>
+          <p>We'll get back to you within 24 hours to confirm your application.</p>
+        </div>
+        <form class="join-form" id="joinForm" novalidate>
+          <div class="field">
+            <label for="name">Full name</label>
+            <input id="name" name="name" type="text" autocomplete="name" required />
+          </div>
+          <div class="field-row">
+            <div class="field">
+              <label for="email">Email</label>
+              <input id="email" name="email" type="email" autocomplete="email" required />
+            </div>
+            <div class="field">
+              <label for="phone">Phone / WhatsApp</label>
+              <input id="phone" name="phone" type="tel" autocomplete="tel" placeholder="+27" required />
+            </div>
+          </div>
+          <div class="field-row">
+            <div class="field">
+              <label for="dob">Date of birth</label>
+              <input id="dob" name="dob" type="date" required />
+            </div>
+            <div class="field">
+              <label for="tier">Membership</label>
+              <select id="tier" name="tier">
+                <option>Dreamer (R150/month)</option>
+                <option selected>Cloud Nine (R350/month)</option>
+                <option>Head in the Clouds (R3 500/year)</option>
+              </select>
+            </div>
+          </div>
+          <label class="check">
+            <input type="checkbox" id="consent" required />
+            <span>I confirm I'm 18 or older, and I agree to the club rules and the processing of my details under POPIA.</span>
+          </label>
+          <button type="submit" class="btn btn-primary btn-block">Send application</button>
+          <p class="form-msg" id="formMsg" role="status"></p>
+        </form>
+      </div>
+    </section>
+  </main>
+
+  <!-- ============ FOOTER ============ -->
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <div>
+        <a href="#top" class="brand">
+          <span class="logo-mark" aria-hidden="true">SD</span>
+          <span class="brand-name">Smokey <em>Dreamz</em></span>
+        </a>
+        <p class="muted">Private members' cannabis club. South Africa.</p>
+      </div>
+      <nav class="footer-links" aria-label="Footer">
+        <a href="#menu">Menu</a>
+        <a href="#membership">Membership</a>
+        <a href="#visit">Visit</a>
+        <a href="#faq">FAQ</a>
+        <a href="https://instagram.com/" rel="noopener">Instagram</a>
+      </nav>
+    </div>
+    <div class="container disclaimer">
+      <p>For adults 18+ only. Smokey Dreamz is a private members' club and does not sell cannabis to the public. Nothing on this site is medical advice. Keep cannabis away from children, don't consume in public and never drive under the influence.</p>
+      <p>© <span id="year"></span> Smokey Dreamz. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
