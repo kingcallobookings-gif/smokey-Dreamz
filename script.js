@@ -2,190 +2,252 @@
 (() => {
   "use strict";
 
-  /* ---------- Age gate ---------- */
-  const gate = document.getElementById("ageGate");
-  const AGE_KEY = "sd_age_ok";
+  /* ======== EDIT YOUR DETAILS HERE ======== */
+  const CONFIG = {
+    address: "",                 // e.g. "12 Long Street, Cape Town"
+    mapsQuery: "",               // what to search on Google Maps (defaults to address)
+    whatsapp: "",                // international format, digits only, e.g. "27821234567"
+    instagram: "",               // full URL
+    facebook: "",                // full URL
+    // 24h clock, [open, close]. 0 = Sunday. Use null for closed all day.
+    hours: { 1: [10, 20], 2: [10, 20], 3: [10, 20], 4: [10, 20], 5: [10, 22], 6: [10, 22], 0: [11, 18] },
+  };
+
+  /* ======== MENU ========
+     img: file in assets/img (without .webp). price: Rand amount, or null → "Ask in store".
+     small: true keeps the photo small (character pieces). */
+  const MENU = {
+    flower: {
+      label: "Flower", title: "The strain wall", note: "Our current strains. Ask a budtender what's fresh.",
+      strains: [
+        ["Sweets", "#ff5fd2", "#ffb3ec"], ["Gabriel's Crown", "#ffcc33", "#fff1b3"], ["Planet of the Grapes", "#7c3aed", "#c4b5fd"],
+        ["Space Jam", "#38bdf8", "#bae6fd"], ["Blue Cheese", "#2563eb", "#93c5fd"], ["Cupid's Kush", "#ff3b4f", "#ffb3bc"],
+        ["GMO", "#39ff6a", "#c6ffd4"], ["London Lobster", "#f97316", "#fed7aa"], ["Rainbow Sherbet", "#e879f9", "#a7f3d0"],
+      ],
+    },
+    preroll: {
+      label: "Pre-rolls", title: "Pre-rolls", note: "Sealed tubes, ready when you are.",
+      items: [
+        { name: "White Wedding", detail: "Pre-roll in a sealed tube", img: "white-wedding" },
+        { name: "Fruit Salad", detail: "Pre-roll in a sealed tube", img: "fruit-salad" },
+        { name: "Ethos Cookies", detail: "Pre-roll in a sealed tube", img: "ethos-cookies" },
+        { name: "Captain Crunch", detail: "Pre-roll in a sealed tube", img: "captain-crunch" },
+        { name: "House pre-rolls", detail: "Rolled in-house, in glass tubes. Ask what's rolled today", img: "house-prerolls" },
+      ],
+    },
+    edible: {
+      label: "Edibles", title: "Edibles", note: "Start low, go slow. Ask us about strengths.",
+      items: [
+        { name: "Sour Snakes", detail: "Candy Land · Indica · 5 × 60mg", img: "sour-snakes" },
+        { name: "Itty Bitty Tiddies", detail: "Candy Land · Sativa · 3 × 40mg", img: "itty-bitty" },
+        { name: "Mini Weed Leaves", detail: "Candy Land · Indica · 10 × 5mg", img: "mini-leaves" },
+        { name: "Around the Block", detail: "Candy Land · Indica · 2 × 80mg", img: "around-block" },
+        { name: "Sucker THC lollipops", detail: "Candy Land · 10, 25, 50 or 100mg", img: "sucker" },
+        { name: "FAR Pink Lemonade", detail: "Fast-acting rosin gummies · 10 × 5mg", img: "far" },
+        { name: "Medibles", detail: "Full-spectrum gummies · 5 × 30mg", img: "medibles" },
+        { name: "Rolo's", detail: "Sativa · 5 × 20mg", img: "rolos" },
+      ],
+    },
+    glass: {
+      label: "Glass & bongs", title: "Glass & bongs", note: "Hand-picked glass and silicone pieces.",
+      items: [
+        { name: "Black Leaf bongs", detail: "Quality German glass in a few styles", img: "bongs" },
+        { name: "Percolator bong", detail: "Smooth, filtered hits", price: 650 },
+        { name: "Frosted moon bong", detail: "A statement piece for the shelf", price: 1200 },
+        { name: "Character water pipes", detail: "Novelty and silicone character pieces", img: "novelty-bong", small: true },
+        { name: "Silicone spoon pipes", detail: "Tough, colourful and easy to clean", img: "silicone-pipe" },
+      ],
+    },
+    gear: {
+      label: "Accessories", title: "Accessories", note: "Everything for the perfect session.",
+      items: [
+        { name: "Rolling trays", detail: "Printed metal trays in loads of designs", img: "rolling-tray" },
+        { name: "Rolling tray kits", detail: "Tray, pipe and extras together", img: "trays-pipes" },
+        { name: "RAW Hemp Wick", detail: "Natural hemp and beeswax · 6m", price: 30, img: "hemp-wick" },
+        { name: "Smoking screens", detail: "5 screens per pack", img: "screens" },
+        { name: "Alien mug", detail: "Wrap-around psychedelic alien print", img: "alien-mug" },
+      ],
+    },
+    incense: {
+      label: "Incense & crystals", title: "Incense & crystals", note: "Set the mood.",
+      items: [
+        { name: "Tribal Soul · Moon Rituals", detail: "Incense sticks", hue: "#a78bfa" },
+        { name: "Tribal Soul · White Sage + Palo Santo", detail: "Incense sticks", hue: "#d6d3d1" },
+        { name: "Tribal Soul · Crystal Healing", detail: "Incense sticks", hue: "#67e8f9" },
+        { name: "Tribal Soul · 7 Chakras", detail: "Incense sticks", hue: "#f472b6" },
+        { name: "Tulasi White Sage", detail: "Smudge incense", hue: "#bef264" },
+        { name: "Pyrite crystal incense", detail: "Crystal-infused sticks", hue: "#fbbf24" },
+      ],
+    },
+  };
+
+  const $ = (s, r = document) => r.querySelector(s);
+  const $$ = (s, r = document) => [...r.querySelectorAll(s)];
   const store = {
     get(k) { try { return localStorage.getItem(k); } catch { return null; } },
-    set(k, v) { try { localStorage.setItem(k, v); } catch { /* storage blocked */ } },
+    set(k, v) { try { localStorage.setItem(k, v); } catch { /* blocked */ } },
   };
-  function unlock() {
-    gate.classList.add("hidden");
-    document.body.classList.remove("locked");
+  const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+
+  /* ---------- Age gate → hologram intro ---------- */
+  const gate = $("#ageGate"), holo = $("#holo");
+  function playHologram() {
+    if (reduce) { document.body.classList.remove("locked"); return; }
+    holo.classList.remove("hidden");
+    let done = false;
+    const finish = () => {
+      if (done) return; done = true;
+      holo.classList.add("leaving");
+      setTimeout(() => { holo.classList.add("hidden"); document.body.classList.remove("locked"); }, 650);
+    };
+    holo.addEventListener("click", finish);
+    setTimeout(finish, 3600);
   }
-  if (store.get(AGE_KEY) === "1") unlock();
-  document.getElementById("ageYes").addEventListener("click", () => {
-    store.set(AGE_KEY, "1");
-    unlock();
-  });
-  document.getElementById("ageNo").addEventListener("click", () => {
-    document.getElementById("ageDenied").hidden = false;
-  });
+  function enter() { gate.classList.add("hidden"); playHologram(); }
+  if (store.get("sd_age_ok") === "1") enter();
+  $("#ageYes").addEventListener("click", () => { store.set("sd_age_ok", "1"); enter(); });
+  $("#ageNo").addEventListener("click", () => { $("#ageDenied").hidden = false; });
 
   /* ---------- Header + mobile nav ---------- */
-  const header = document.querySelector(".site-header");
+  const header = $(".site-header");
   const onScroll = () => header.classList.toggle("scrolled", window.scrollY > 30);
-  window.addEventListener("scroll", onScroll, { passive: true });
-  onScroll();
+  window.addEventListener("scroll", onScroll, { passive: true }); onScroll();
+  const nav = $("#nav"), toggle = $("#navToggle");
+  const setNav = (open) => { nav.classList.toggle("open", open); toggle.setAttribute("aria-expanded", String(open)); document.body.style.overflow = open ? "hidden" : ""; };
+  toggle.addEventListener("click", () => setNav(!nav.classList.contains("open")));
+  $$("a", nav).forEach((a) => a.addEventListener("click", () => setNav(false)));
 
-  const nav = document.getElementById("nav");
-  const toggle = document.getElementById("navToggle");
-  toggle.addEventListener("click", () => {
-    const open = nav.classList.toggle("open");
-    toggle.setAttribute("aria-expanded", String(open));
-    document.body.style.overflow = open ? "hidden" : "";
-  });
-  nav.querySelectorAll("a").forEach((a) =>
-    a.addEventListener("click", () => {
-      nav.classList.remove("open");
-      toggle.setAttribute("aria-expanded", "false");
-      document.body.style.overflow = "";
-    })
-  );
+  /* ---------- Marquee ---------- */
+  const words = ["Members only", "Good vibes", "18+", "Boba bar", "Start low, go slow", "Light up, drift off"];
+  const run = words.map((w) => `<span>${w}</span><span><b>✦</b></span>`).join("");
+  $("#marquee").innerHTML = run + run;
 
-  /* ---------- Menu ----------
-     Taken from the shop photos. img = file in assets/products. price: Rand amount, or null to show "Ask in store". */
-  const STRAINS = ["Sweets", "Gabriel's Crown", "Planet of the Grapes", "Space Jam", "Blue Cheese",
-                   "Cupid's Kush", "GMO", "London Lobster", "Rainbow Sherbet"];
-  const MENU = [
-    { name: "White Wedding",        cat: "preroll", detail: "Pre-roll in a sealed tube",             price: null, img: "white-wedding" },
-    { name: "Ethos Cookies",        cat: "preroll", detail: "Pre-roll in a sealed tube",             price: null, img: "ethos-cookies" },
-    { name: "Fruit Salad",          cat: "preroll", detail: "Pre-roll in a sealed tube",             price: null, img: "fruit-salad" },
-    { name: "Captain Crunch",       cat: "preroll", detail: "Pre-roll in a sealed tube",             price: null, img: "captain-crunch" },
-    { name: "House pre-rolls",      cat: "preroll", detail: "Cones in clear tubes. Ask what's rolled today", price: null, img: "house-prerolls" },
-    { name: "Sour Snakes",          cat: "edible",  detail: "Candy Land · Indica · 5 × 60mg = 300mg", price: null, img: "sour-snakes" },
-    { name: "Itty Bitty Tiddies",   cat: "edible",  detail: "Candy Land · Sativa · 3 × 40mg = 120mg", price: null, img: "itty-bitty" },
-    { name: "Mini Weed Leaves",     cat: "edible",  detail: "Candy Land · Indica · 10 × 5mg = 50mg",  price: null, img: "mini-leaves" },
-    { name: "Around the Block",     cat: "edible",  detail: "Candy Land · Indica · 2 × 80mg = 160mg", price: null, img: "around-block" },
-    { name: "Sucker THC lollipops", cat: "edible",  detail: "Candy Land · 10, 25, 50 or 100mg",       price: null, img: "sucker" },
-    { name: "FAR Pink Lemonade",    cat: "edible",  detail: "Fast-acting rosin gummies · 10 × 5mg",   price: null, img: "far" },
-    { name: "Medibles Lychee",      cat: "edible",  detail: "Full-spectrum gummies · 5 × 30mg = 150mg", price: null, img: "medibles" },
-    { name: "Rolo's",               cat: "edible",  detail: "Sativa · 5 × 20mg = 100mg",              price: null, img: "rolos" },
-    { name: "Glass bongs",          cat: "gear",    detail: "Percolator, beaker and novelty pieces",  price: null, img: "bongs" },
-    { name: "Rolling trays & glass pipes", cat: "gear", detail: "Printed metal trays and hand-blown spoon pipes", price: null, img: "trays-pipes" },
-    { name: "Alien mug",            cat: "gear",    detail: "Wrap-around psychedelic alien print",    price: null, img: "alien-mug" },
-    { name: "RAW Hemp Wick",        cat: "gear",    detail: "Natural hemp and beeswax · 6m",          price: 30,   img: "hemp-wick" },
-    { name: "Smoking screens",      cat: "gear",    detail: "5 screens per wallet pack",              price: null, img: "screens" },
-  ];
-  const LABELS = { preroll: "Pre-roll", edible: "Edible", gear: "Glass & gear" };
-  const grid = document.getElementById("menuGrid");
+  /* ---------- Menu ---------- */
   const fmt = (n) => "R" + n.toLocaleString("en-ZA");
-  document.getElementById("strains").innerHTML = STRAINS.map((s) => `<li>${s}</li>`).join("");
+  const tabs = $("#tabs"), panels = $("#panels");
+  const keys = Object.keys(MENU);
+  tabs.innerHTML = keys.map((k, i) => `<button class="tab" role="tab" id="tab-${k}" aria-controls="panel-${k}" aria-selected="${i === 0}">${MENU[k].label}</button>`).join("");
 
-  function renderMenu(filter) {
-    const items = filter === "all" ? MENU : MENU.filter((m) => m.cat === filter);
-    grid.innerHTML = items.map((m, i) => `
-      <article class="product cat-${m.cat}" style="animation-delay:${i * 40}ms">
-        <div class="product-art"><img src="assets/products/${m.img}.jpg" alt="${m.name}" loading="lazy" width="640" height="480" /></div>
-        <div class="product-body">
-          <span class="tag">${LABELS[m.cat]}</span>
-          <h3>${m.name}</h3>
-          <p class="desc">${m.detail}</p>
-          <div class="meta">${m.price ? `<span class="price">${fmt(m.price)}</span>` : `<span class="ask">Ask in store</span>`}</div>
-        </div>
-      </article>`).join("");
+  function itemCard(it, label) {
+    const initial = it.name.replace(/^Tribal Soul · /, "").charAt(0);
+    const pic = it.img
+      ? `<div class="pic${it.small ? " small" : ""}"><img src="assets/img/${it.img}.webp" alt="${esc(it.name)}" loading="lazy" decoding="async" width="560" height="560"></div>`
+      : `<div class="pic"><div class="gen" style="background:radial-gradient(circle at 50% 40%,${it.hue || "#7c3aed"}55,#12061f 70%)"><span style="color:${it.hue || "#c4b5fd"}">${esc(initial)}</span></div></div>`;
+    return `<article class="card item">${pic}<div class="body"><span class="tag">${esc(label)}</span><h4>${esc(it.name)}</h4><p>${esc(it.detail)}</p>${
+      it.price ? `<span class="price">${fmt(it.price)} <small style="font-size:.7em;color:var(--muted)">contribution</small></span>` : `<span class="ask">Ask in store</span>`}</div></article>`;
   }
-  document.querySelectorAll(".chip").forEach((chip) =>
-    chip.addEventListener("click", () => {
-      document.querySelectorAll(".chip").forEach((c) => {
-        c.classList.toggle("active", c === chip);
-        c.setAttribute("aria-selected", String(c === chip));
-      });
-      renderMenu(chip.dataset.filter);
-    })
-  );
-  renderMenu("all");
-  /* ---------- Open / closed (South Africa time) ---------- */
-  const HOURS = { 0: [11, 18], 1: [10, 20], 2: [10, 20], 3: [10, 20], 4: [10, 20], 5: [10, 22], 6: [10, 22] };
-  const status = document.getElementById("openStatus");
-  function updateStatus() {
-    const now = new Date(new Date().toLocaleString("en-US", { timeZone: "Africa/Johannesburg" }));
-    const [o, c] = HOURS[now.getDay()];
-    const h = now.getHours() + now.getMinutes() / 60;
-    const open = h >= o && h < c;
-    status.className = "open-status " + (open ? "open" : "closed");
-    status.textContent = open ? `Open now · closes at ${c}:00` : `Closed now · opens at ${o}:00`;
-  }
-  updateStatus();
-  setInterval(updateStatus, 60_000);
+  panels.innerHTML = keys.map((k, i) => {
+    const c = MENU[k];
+    const body = c.strains
+      ? `<div class="strain-wall">${c.strains.map(([n, c1, c2]) => `<div class="card strain" style="--c1:${c1};--c2:${c2}"><span class="jar"></span><h4>${esc(n)}</h4><small>Ask in store</small></div>`).join("")}</div>`
+      : `<div class="carousel" id="car-${k}">${c.items.map((it) => itemCard(it, c.label)).join("")}</div>`;
+    const nav = c.strains ? "" : `<div class="car-nav"><button class="car-btn" data-car="car-${k}" data-dir="-1" aria-label="Previous">‹</button><button class="car-btn" data-car="car-${k}" data-dir="1" aria-label="Next">›</button></div>`;
+    return `<div class="panel${i === 0 ? " active" : ""}" role="tabpanel" id="panel-${k}" aria-labelledby="tab-${k}"><div class="panel-intro"><div><h3>${c.title}</h3><p>${c.note}</p></div>${nav}</div>${body}</div>`;
+  }).join("");
+  tabs.addEventListener("click", (e) => {
+    const t = e.target.closest(".tab"); if (!t) return;
+    $$(".tab", tabs).forEach((b) => b.setAttribute("aria-selected", String(b === t)));
+    $$(".panel", panels).forEach((p) => p.classList.toggle("active", p.id === t.getAttribute("aria-controls")));
+    t.scrollIntoView({ behavior: "smooth", block: "nearest", inline: "center" });
+  });
+  panels.addEventListener("click", (e) => {
+    const b = e.target.closest(".car-btn"); if (!b) return;
+    const car = document.getElementById(b.dataset.car);
+    car.scrollBy({ left: Number(b.dataset.dir) * car.clientWidth * 0.8, behavior: "smooth" });
+  });
 
-  /* ---------- Join form ---------- */
-  const form = document.getElementById("joinForm");
-  const msg = document.getElementById("formMsg");
-  function age(dob) {
-    const d = new Date(dob), t = new Date();
-    let a = t.getFullYear() - d.getFullYear();
-    if (t.getMonth() < d.getMonth() || (t.getMonth() === d.getMonth() && t.getDate() < d.getDate())) a--;
-    return a;
+  /* ---------- Gallery dots + auto-advance ---------- */
+  const gal = $("#gallery-track"), dots = $("#gallery-dots");
+  const shots = $$(".shot", gal);
+  dots.innerHTML = shots.map((_, i) => `<button aria-label="Photo ${i + 1}"${i === 0 ? ' class="on"' : ""}></button>`).join("");
+  const dotBtns = $$("button", dots);
+  dotBtns.forEach((d, i) => d.addEventListener("click", () => gal.scrollTo({ left: shots[i].offsetLeft - gal.offsetLeft - (gal.clientWidth - shots[i].clientWidth) / 2, behavior: "smooth" })));
+  let galIdx = 0;
+  gal.addEventListener("scroll", () => {
+    const mid = gal.scrollLeft + gal.clientWidth / 2;
+    let best = 0, bd = Infinity;
+    shots.forEach((s, i) => { const c = s.offsetLeft - gal.offsetLeft + s.clientWidth / 2; const d = Math.abs(c - mid); if (d < bd) { bd = d; best = i; } });
+    galIdx = best; dotBtns.forEach((d, i) => d.classList.toggle("on", i === best));
+  }, { passive: true });
+  let galPaused = false;
+  gal.addEventListener("pointerdown", () => { galPaused = true; });
+  if (!reduce) setInterval(() => { if (!galPaused && !document.hidden) dotBtns[(galIdx + 1) % shots.length].click(); }, 4500);
+
+  /* ---------- Visit: details + hours + open/closed (SA time) ---------- */
+  const todo = (t) => `<span class="todo">${t}</span>`;
+  $("#addr").innerHTML = CONFIG.address ? esc(CONFIG.address) : todo("Address coming soon");
+  $("#waText").innerHTML = CONFIG.whatsapp ? "+" + esc(CONFIG.whatsapp) : todo("Number coming soon");
+  const q = encodeURIComponent(CONFIG.mapsQuery || CONFIG.address || "Smokey Dreamz South Africa");
+  $("#mapBtn").href = `https://www.google.com/maps/search/?api=1&query=${q}`;
+  const waBase = CONFIG.whatsapp ? `https://wa.me/${CONFIG.whatsapp}` : null;
+  [$("#waBtn"), $("#waFloat")].forEach((a) => { if (waBase) a.href = waBase + "?text=" + encodeURIComponent("Hi Smokey Dreamz! 👋"); else a.hidden = true; });
+  if (CONFIG.instagram) $("#igLink").href = CONFIG.instagram; else $("#igLink").hidden = true;
+  if (CONFIG.facebook) $("#fbLink").href = CONFIG.facebook; else $("#fbLink").hidden = true;
+
+  const DAYS = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+  const hh = (h) => `${String(Math.floor(h)).padStart(2, "0")}:${String(Math.round((h % 1) * 60)).padStart(2, "0")}`;
+  function saNow() {
+    const p = Object.fromEntries(new Intl.DateTimeFormat("en-GB", { timeZone: "Africa/Johannesburg", weekday: "short", hour: "numeric", minute: "numeric", hourCycle: "h23" })
+      .formatToParts(new Date()).map((x) => [x.type, x.value]));
+    const day = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"].indexOf(p.weekday);
+    return { day, h: Number(p.hour) + Number(p.minute) / 60 };
   }
+  function renderHours() {
+    const { day, h } = saNow();
+    $("#hours").innerHTML = [1, 2, 3, 4, 5, 6, 0].map((d) => {
+      const r = CONFIG.hours[d];
+      return `<tr${d === day ? ' class="today"' : ""}><td>${DAYS[d]}</td><td>${r ? `${hh(r[0])} – ${hh(r[1])}` : "Closed"}</td></tr>`;
+    }).join("");
+    const r = CONFIG.hours[day];
+    const st = $("#openStatus");
+    const open = r && h >= r[0] && h < r[1];
+    st.className = "open-status " + (open ? "open" : "closed");
+    if (open) st.textContent = `Open now · until ${hh(r[1])}`;
+    else {
+      let msg = "Closed now";
+      for (let i = 0; i < 8; i++) {
+        const d = (day + i) % 7, rr = CONFIG.hours[d];
+        if (!rr || (i === 0 && h >= rr[0])) continue;
+        msg += ` · opens ${i === 0 ? "today" : i === 1 ? "tomorrow" : DAYS[d]} at ${hh(rr[0])}`; break;
+      }
+      st.textContent = msg;
+    }
+  }
+  renderHours(); setInterval(renderHours, 60000);
+
+  /* ---------- Join form → WhatsApp ---------- */
+  const form = $("#joinForm"), msg = $("#formMsg");
+  const ageOf = (dob) => { const d = new Date(dob), t = new Date(); let a = t.getFullYear() - d.getFullYear(); if (t.getMonth() < d.getMonth() || (t.getMonth() === d.getMonth() && t.getDate() < d.getDate())) a--; return a; };
   form.addEventListener("submit", (e) => {
     e.preventDefault();
-    msg.className = "form-msg";
-    let ok = true;
-    form.querySelectorAll("input[required]").forEach((el) => {
+    msg.className = "form-msg"; let ok = true;
+    $$("input", form).forEach((el) => {
       const bad = el.type === "checkbox" ? !el.checked : !el.value.trim() || !el.checkValidity();
-      el.classList.toggle("invalid", bad);
+      (el.type === "checkbox" ? el.closest(".check") : el).classList.toggle("invalid", bad);
       if (bad) ok = false;
     });
-    if (!ok) {
-      msg.textContent = "Please fill in all fields and tick the box.";
-      msg.classList.add("err");
-      return;
-    }
-    if (age(form.dob.value) < 18) {
-      msg.textContent = "Sorry, you need to be 18 or older to join.";
-      msg.classList.add("err");
-      return;
-    }
-    // TODO: send to a backend, form service or WhatsApp. See README.
-    msg.textContent = `Thanks, ${form.name.value.split(" ")[0]}! We'll be in touch within 24 hours.`;
+    if (!ok) { msg.textContent = "Please fill in every field and tick both boxes."; msg.classList.add("err"); return; }
+    if (ageOf(form.dob.value) < 18) { msg.textContent = "Sorry, you need to be 18 or older to join."; msg.classList.add("err"); return; }
+    const text = `Hi Smokey Dreamz! I'd like to apply for membership.\n\nName: ${form.name.value.trim()}\nEmail: ${form.email.value.trim()}\nWhatsApp: ${form.wa.value.trim()}\nDate of birth: ${form.dob.value}\n✅ I confirm I'm 18+\n✅ I consent to my details being used for membership (POPIA)`;
+    if (!CONFIG.whatsapp) { msg.textContent = "Applications open as soon as our WhatsApp number is added. Check back soon!"; msg.classList.add("err"); return; }
+    const url = `https://wa.me/${CONFIG.whatsapp}?text=${encodeURIComponent(text)}`;
+    msg.innerHTML = `Thanks, ${esc(form.name.value.split(" ")[0])}! Tap below to open WhatsApp with your details, then hit send.<br><a class="btn" style="margin-top:12px" href="${url}" target="_blank" rel="noopener">Open WhatsApp</a>`;
     msg.classList.add("ok");
-    form.reset();
   });
 
   /* ---------- Reveal on scroll ---------- */
-  const revealEls = document.querySelectorAll(".section-head, .feature, .steps li, .tier, .faq details, .map-card, .two-col > div:first-child");
-  revealEls.forEach((el) => el.classList.add("reveal"));
-  const io = new IntersectionObserver((entries) => {
-    entries.forEach((en) => { if (en.isIntersecting) { en.target.classList.add("in"); io.unobserve(en.target); } });
-  }, { threshold: 0.12 });
-  revealEls.forEach((el) => io.observe(el));
+  const io = new IntersectionObserver((ents) => ents.forEach((en) => { if (en.isIntersecting) { en.target.classList.add("in"); io.unobserve(en.target); } }), { threshold: 0.12, rootMargin: "0px 0px -40px 0px" });
+  $$(".reveal").forEach((el, i) => { el.style.transitionDelay = `${(i % 3) * 90}ms`; io.observe(el); });
 
-  /* ---------- Floating ember particles ---------- */
-  const canvas = document.getElementById("particles");
-  const ctx = canvas.getContext("2d");
-  const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-  let W, H, parts = [];
-  function resize() {
-    const dpr = Math.min(window.devicePixelRatio || 1, 2);
-    W = canvas.clientWidth; H = canvas.clientHeight;
-    canvas.width = W * dpr; canvas.height = H * dpr;
-    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-    const count = Math.round(Math.min(70, W / 18));
-    parts = Array.from({ length: count }, () => ({
-      x: Math.random() * W, y: Math.random() * H,
-      r: Math.random() * 1.8 + 0.4,
-      vy: -(Math.random() * 0.35 + 0.1),
-      vx: (Math.random() - 0.5) * 0.2,
-      a: Math.random() * 0.6 + 0.2,
-      hue: [0, 48, 130, 280][Math.floor(Math.random() * 4)],
-    }));
+  /* ---------- Hero parallax (desktop) ---------- */
+  const stage = $(".stage");
+  if (!reduce && window.matchMedia("(pointer:fine)").matches) {
+    window.addEventListener("pointermove", (e) => {
+      const x = e.clientX / innerWidth - 0.5, y = e.clientY / innerHeight - 0.5;
+      stage.style.transform = `translate(${x * 18}px, ${y * 14}px) rotate(${x * 3}deg)`;
+    }, { passive: true });
   }
-  function tick() {
-    ctx.clearRect(0, 0, W, H);
-    for (const p of parts) {
-      p.y += p.vy; p.x += p.vx + Math.sin(p.y / 40) * 0.15;
-      if (p.y < -10) { p.y = H + 10; p.x = Math.random() * W; }
-      ctx.beginPath();
-      ctx.fillStyle = `hsla(${p.hue}, 100%, 75%, ${p.a})`;
-      ctx.shadowBlur = 8; ctx.shadowColor = `hsla(${p.hue}, 100%, 70%, 0.8)`;
-      ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
-      ctx.fill();
-    }
-    if (!reduce) requestAnimationFrame(tick);
-  }
-  resize(); tick();
-  window.addEventListener("resize", resize);
 
-  document.getElementById("year").textContent = new Date().getFullYear();
+  $("#year").textContent = new Date().getFullYear();
 })();

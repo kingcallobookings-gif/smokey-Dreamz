@@ -1,357 +1,262 @@
 <!doctype html>
 <html lang="en-ZA">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Smokey Dreamz</title>
-  <meta name="description" content="Smokey Dreamz is a private, members-only cannabis club in South Africa. Flower, pre-rolls, edibles and glass for adults 18+." />
-  <meta name="theme-color" content="#120c1c" />
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=UnifrakturMaguntia&family=Syne:wght@600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="styles.css" />
-  <link rel="icon" href="assets/favicon.png" type="image/png" />
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Smokey Dreamz · Private Members' Club · 18+</title>
+<meta name="description" content="Smokey Dreamz is a private members' cannabis club and chill bar in South Africa. Adults 18+ only. Good vibes, quality products, boba and Freezo's.">
+<meta name="theme-color" content="#12061f">
+<meta name="robots" content="noindex">
+<link rel="icon" href="assets/art/lion.svg" type="image/svg+xml">
+<link rel="preload" href="assets/fonts/fraktur.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="assets/fonts/syne.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="styles.css">
 </head>
 <body class="locked">
 
-  <!-- ============ AGE GATE ============ -->
-  <div class="age-gate" id="ageGate" role="dialog" aria-modal="true" aria-labelledby="ageTitle">
-    <div class="age-card">
-      <img class="age-lion" src="assets/photos/lion.jpg" alt="Smokey Dreamz lion logo" width="96" height="96" />
-      <h2 id="ageTitle">Are you 18 or older?</h2>
-      <p>Smokey Dreamz is a private club for adults. You need to be 18 or older to enter this site.</p>
-      <div class="age-actions">
-        <button class="btn btn-primary" id="ageYes">Yes, I'm 18+</button>
-        <button class="btn btn-ghost" id="ageNo">No</button>
-      </div>
-      <p class="age-denied" id="ageDenied" hidden>Sorry, you need to be 18 or older to visit. Come back when you're older.</p>
+<!-- 18+ age gate -->
+<div class="gate" id="ageGate" role="dialog" aria-modal="true" aria-labelledby="ageTitle">
+  <div class="gate-card">
+    <img src="assets/art/lion.svg" alt="" width="150" height="176">
+    <h2 id="ageTitle">Are you 18 or older?</h2>
+    <p>Smokey Dreamz is a private members' club for adults only. Please confirm your age to enter.</p>
+    <div class="row">
+      <button class="btn green" id="ageYes">Yes, I'm 18+</button>
+      <button class="btn ghost" id="ageNo">No</button>
     </div>
+    <p class="denied" id="ageDenied" hidden>Sorry, you need to be 18 or older to visit this site.</p>
+    <p class="fine">By entering you agree that you are of legal age and will use cannabis responsibly and privately.</p>
   </div>
+</div>
 
-  <!-- ============ HEADER ============ -->
-  <header class="site-header" id="top">
-    <a href="#top" class="brand">
-      <img class="logo-mark" src="assets/photos/lion.jpg" alt="" width="42" height="42" />
-      <span class="brand-name">Smokey <em>Dreamz</em></span>
-    </a>
-    <nav class="nav" id="nav" aria-label="Main">
-      <a href="#about">About</a>
-      <a href="#menu">Menu</a>
-      <a href="#drinks">Drinks</a>
-      <a href="#gallery">The shop</a>
-      <a href="#visit">Visit</a>
-      <a href="#faq">FAQ</a>
-      <a href="#join" class="btn btn-primary btn-sm">Join the club</a>
-    </nav>
-    <button class="nav-toggle" id="navToggle" aria-label="Open menu" aria-expanded="false" aria-controls="nav">
-      <span></span><span></span><span></span>
-    </button>
-  </header>
+<!-- hologram intro -->
+<div class="holo hidden" id="holo" aria-hidden="true">
+  <div class="holo-beam"></div>
+  <div class="holo-stack">
+    <img class="holo-lion" src="assets/art/lion.svg" alt="">
+    <img class="holo-word" src="assets/art/wordmark.svg" alt="">
+  </div>
+  <div class="holo-base"></div>
+  <div class="holo-scan"></div>
+  <span class="holo-skip">TAP TO SKIP</span>
+</div>
 
-  <main>
-    <!-- ============ HERO ============ -->
-    <section class="hero">
-      <div class="smoke" aria-hidden="true">
-        <span></span><span></span><span></span><span></span>
+<div class="smoke-layer" aria-hidden="true"><span class="puff p1"></span><span class="puff p2"></span><span class="puff p3"></span><span class="puff p4"></span></div>
+
+<header class="site-header">
+  <div class="nav-wrap">
+    <a class="brand" href="#top" aria-label="Smokey Dreamz home"><img src="assets/art/lion.svg" alt="" width="44" height="52"><span>Smokey Dreamz</span></a>
+    <button class="nav-toggle" id="navToggle" aria-expanded="false" aria-controls="nav" aria-label="Menu"><span></span><span></span><span></span></button>
+    <ul class="nav" id="nav">
+      <li><a href="#about">About</a></li>
+      <li><a href="#menu">Menu</a></li>
+      <li><a href="#bar">Chill bar</a></li>
+      <li><a href="#membership">Membership</a></li>
+      <li><a href="#visit">Visit</a></li>
+      <li><a href="#faq">FAQ</a></li>
+      <li><a class="nav-cta" href="#join">Join the club</a></li>
+    </ul>
+  </div>
+</header>
+
+<main id="top">
+  <section class="hero">
+    <div class="slime-top"></div><div class="stars"></div><div class="rays"></div><div class="portal"></div>
+    <div class="hero-inner">
+      <div class="hero-copy">
+        <span class="eyebrow"><i></i>Private members' club · 18+</span>
+        <h1><span class="sr">Smokey Dreamz</span><img class="wordmark-img" src="assets/art/wordmark.svg" alt="" width="1100" height="306"><span class="slogan">Light up. <em>Drift off.</em></span></h1>
+        <p class="lede">A private lounge for grown-ups who like their evenings slow. Quality flower, edibles and glass, a boba and Freezo bar, and good people to share it with.</p>
+        <div class="ctas"><a class="btn" href="#join">Join the club</a><a class="btn ghost" href="#menu">See the menu</a></div>
       </div>
-      <canvas id="particles" aria-hidden="true"></canvas>
-      <div class="hero-inner">
-        <div class="hero-copy">
-          <p class="eyebrow">Private members' cannabis club · South Africa</p>
-          <h1><span class="blackletter">Smokey Dreamz</span><span class="hero-sub">Light up. <span class="rasta">Drift off.</span></span></h1>
-          <p class="lead">Top-shelf flower, pre-rolls, edibles and glass in a chilled-out space. Members only, adults 18+.</p>
-          <div class="hero-cta">
-            <a href="#join" class="btn btn-primary">Become a member</a>
-            <a href="#menu" class="btn btn-ghost">See the menu</a>
+      <div class="stage">
+        <div class="halo"></div><div class="planet"></div>
+        <span class="orb o1"></span><span class="orb o2"></span><span class="orb o3"></span>
+        <img class="hero-lion" src="assets/art/lion.svg" alt="The Smokey Dreamz Rasta lion, half-baked behind his shades" width="512" height="600">
+      </div>
+    </div>
+    <span class="scroll-cue" aria-hidden="true"></span>
+  </section>
+
+  <div class="marquee" aria-hidden="true"><div class="marquee-track" id="marquee"></div></div>
+
+  <section class="section" id="about">
+    <div class="wrap about-grid">
+      <div class="about-art reveal left"><span class="ring"></span><span class="ring r2"></span><img src="assets/img/shop-sign.webp" alt="The Smokey Dreamz lion sign inside the club" loading="lazy" width="600" height="600"></div>
+      <div class="about-copy reveal right">
+        <span class="kicker">The club</span>
+        <h2 class="title">Good vibes, good smoke.</h2>
+        <p>Smokey Dreamz is a private members' club, not a shop on the street. Members share in a space where they can relax, try something new and talk to people who know their stuff.</p>
+        <p>Come for the strain wall, stay for the boba, the music and the conversation. No rush, no judgement.</p>
+        <div class="features">
+          <div class="card feature"><div class="ico">🔒</div><h3>Members only</h3><p>Private, ID-checked and adults only.</p></div>
+          <div class="card feature"><div class="ico">🌿</div><h3>Quality first</h3><p>A curated wall of flower, edibles and glass.</p></div>
+          <div class="card feature"><div class="ico">☁️</div><h3>Chill space</h3><p>Boba, Freezo's, snacks and good company.</p></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section-alt" id="menu">
+    <div class="wrap">
+      <div class="head reveal">
+        <span class="kicker">For members</span>
+        <h2><span class="drip">The Menu</span></h2>
+        <p>What's on the shelf right now. Stock changes often, so ask in the club for today's selection. Contributions are shown where we have them.</p>
+      </div>
+      <div class="tabs" role="tablist" id="tabs"></div>
+      <div id="panels"></div>
+      <p class="contrib">Items marked "Ask in store" have a member contribution you can confirm at the counter.</p>
+    </div>
+  </section>
+
+  <section class="section" id="bar">
+    <div class="wrap">
+      <div class="head reveal">
+        <span class="kicker">Thirsty? Peckish?</span>
+        <h2><span class="drip">The Chill Bar</span></h2>
+        <p>Cold drinks, boba and thick Freezo's to keep the good times flowing.</p>
+      </div>
+      <div class="bar-grid">
+        <div class="card bar-card bar-hero reveal">
+          <img src="assets/art/boba.svg" alt="" width="150" height="225" loading="lazy">
+          <div>
+            <h3>Boba tea <b>R50</b></h3>
+            <p>Mix and match your syrups and pearls. Go fruity, go blue, go wild.</p>
+            <div class="chips"><span class="chip c-wm">Watermelon</span><span class="chip c-st">Strawberry</span><span class="chip c-bc">Blue Curaçao</span></div>
           </div>
-          <ul class="hero-stats">
-            <li><strong>18+</strong><span>Members only</span></li>
-            <li><strong>9+</strong><span>Strains on the wall</span></li>
-            <li><strong>Glass</strong><span>Bongs &amp; accessories</span></li>
+        </div>
+        <div class="card bar-card reveal left">
+          <h3>Freezo's <b>R50</b></h3>
+          <p>Thick, icy and seriously good.</p>
+          <div class="chips"><span class="chip">Toffee Caramel</span><span class="chip">Brazilian Hazelnut</span><span class="chip">White Chocolate</span><span class="chip">Swiss Chocolate</span><span class="chip">Coffee</span></div>
+        </div>
+        <div class="card bar-card reveal right">
+          <h3>Cold drinks</h3>
+          <ul class="price-list">
+            <li><span>Coca-Cola · Coke Zero · Fanta Orange · Sprite</span><b>R15</b></li>
+            <li><span>Water</span><b>R10</b></li>
+            <li><span>Lemon or Peach Ice Tea</span><b>R30</b></li>
           </ul>
         </div>
-        <figure class="hero-art">
-          <img src="assets/photos/sign.jpg" alt="The Smokey Dreamz sign: a Rasta lion in sunglasses under the club name" width="1000" height="1116" />
-        </figure>
-      </div>
-    </section>
-
-    <!-- ============ ABOUT ============ -->
-    <section class="section" id="about">
-      <div class="container two-col">
-        <div>
-          <p class="eyebrow">About us</p>
-          <h2>Good vibes, good smoke.</h2>
-          <p>Smokey Dreamz is a private club where adults can find quality cannabis and relax without the stress. We keep the shelves stocked with flower, ready-rolled pre-rolls, edibles and proper glass.</p>
-          <p>We're a members' club, not a shop. That means members only, a real community, and a team that knows the menu and is happy to help you choose.</p>
-        </div>
-        <div class="feature-grid">
-          <article class="feature">
-            <h3>Strain wall</h3>
-            <p>A rotating line-up of flower, from Blue Cheese to GMO.</p>
-          </article>
-          <article class="feature">
-            <h3>Pre-rolls</h3>
-            <p>Ready to go in sealed tubes. No rolling needed.</p>
-          </article>
-          <article class="feature">
-            <h3>Edibles</h3>
-            <p>Gummies, sweets and lollipops with the dose on every pack.</p>
-          </article>
-          <article class="feature">
-            <h3>Glass &amp; gear</h3>
-            <p>Percolator bongs, hemp wick, screens and more.</p>
-          </article>
+        <div class="card bar-card reveal" style="grid-column:1/-1">
+          <h3>Snacks</h3>
+          <p>Jimbo's Biltong, including Peri-Peri. Ask what's in today.</p>
         </div>
       </div>
-    </section>
-
-    <!-- ============ MENU ============ -->
-    <section class="section section-alt" id="menu">
-      <div class="container">
-        <div class="section-head">
-          <p class="eyebrow">The menu</p>
-          <h2>What's on the shelf</h2>
-          <p>Available to registered members only. Stock changes often, so ask the team what's in this week.</p>
-        </div>
-
-        <div class="strain-wall">
-          <h3>Flower on the strain wall</h3>
-          <ul class="strains" id="strains"></ul>
-        </div>
-
-        <div class="filters" role="tablist" aria-label="Filter menu">
-          <button class="chip active" data-filter="all" role="tab" aria-selected="true">All</button>
-          <button class="chip" data-filter="preroll" role="tab" aria-selected="false">Pre-rolls</button>
-          <button class="chip" data-filter="edible" role="tab" aria-selected="false">Edibles</button>
-          <button class="chip" data-filter="gear" role="tab" aria-selected="false">Glass &amp; gear</button>
-        </div>
-
-        <div class="menu-grid" id="menuGrid" aria-live="polite"></div>
-        <p class="note">Edibles take 30 to 90 minutes to kick in. Start low and go slow.</p>
-      </div>
-    </section>
-
-    <!-- ============ DRINKS ============ -->
-    <section class="section" id="drinks">
-      <div class="container">
-        <div class="section-head">
-          <p class="eyebrow">Chill bar</p>
-          <h2>Drinks &amp; snacks</h2>
-          <p>Cold drinks, iced Freezo's, boba tea and biltong at the counter. Card and cash welcome.</p>
-        </div>
-        <div class="drinks">
-          <article class="drink-card">
-            <h3>Boba tea <span class="drink-price">R50</span></h3>
-            <p class="drink-sub">Mix &amp; match your boba and syrup</p>
-            <ul class="drink-list plain">
-              <li>Watermelon</li>
-              <li>Strawberry</li>
-              <li>Blue Curaçao</li>
-            </ul>
-          </article>
-          <article class="drink-card">
-            <h3>Freezo's <span class="drink-price">R50</span></h3>
-            <p class="drink-sub">Iced, blended and thick</p>
-            <ul class="drink-list plain">
-              <li>Toffee Caramel</li>
-              <li>Brazilian Hazelnut</li>
-              <li>White Chocolate</li>
-              <li>Swiss Chocolate</li>
-              <li>Coffee</li>
-            </ul>
-          </article>
-          <article class="drink-card">
-            <h3>Cold drinks</h3>
-            <p class="drink-sub">From the fridge</p>
-            <ul class="drink-list">
-              <li><span>Coca-Cola</span><span>R15</span></li>
-              <li><span>Coca-Cola Zero</span><span>R15</span></li>
-              <li><span>Fanta Orange</span><span>R15</span></li>
-              <li><span>Sprite</span><span>R15</span></li>
-              <li><span>Water</span><span>R10</span></li>
-              <li><span>Lemon Ice Tea</span><span>R30</span></li>
-              <li><span>Peach Ice Tea</span><span>R30</span></li>
-            </ul>
-          </article>
-          <article class="drink-card snack-card">
-            <img src="assets/products/biltong.jpg" alt="A pack of Jimbo's Peri-Peri Biltong" loading="lazy" width="640" height="480" />
-            <h3>Biltong</h3>
-            <p class="drink-sub">Jimbo's Biltong, Peri-Peri</p>
-          </article>
-        </div>
-      </div>
-    </section>
-
-    <!-- ============ GALLERY ============ -->
-    <section class="section section-alt" id="gallery">
-      <div class="container">
-        <div class="section-head">
-          <p class="eyebrow">The shop</p>
-          <h2>Step inside</h2>
-        </div>
-        <div class="gallery">
-          <figure class="g-wide"><img src="assets/photos/counter.jpg" alt="Pre-rolls in glowing display racks on the counter" loading="lazy" /></figure>
-          <figure><img src="assets/photos/prerolls.jpg" alt="White Wedding, Fruit Salad and other pre-roll tubes" loading="lazy" /></figure>
-          <figure><img src="assets/photos/glass.jpg" alt="Glass bongs on the shelf" loading="lazy" /></figure>
-          <figure><img src="assets/photos/candyland.jpg" alt="Candy Land edible packs" loading="lazy" /></figure>
-          <figure><img src="assets/photos/gummies.jpg" alt="FAR and Medibles gummies" loading="lazy" /></figure>
-        </div>
-      </div>
-    </section>
-
-    <!-- ============ MEMBERSHIP ============ -->
-    <section class="section" id="membership">
-      <div class="container">
-        <div class="section-head">
-          <p class="eyebrow">Membership</p>
-          <h2>How the club works</h2>
-        </div>
-        <ol class="steps">
-          <li>
-            <span class="step-num">01</span>
-            <h3>Apply</h3>
-            <p>Fill in the form below. You need to be 18 or older.</p>
-          </li>
-          <li>
-            <span class="step-num">02</span>
-            <h3>Verify</h3>
-            <p>Bring your ID on your first visit so we can confirm your age and sign you in.</p>
-          </li>
-          <li>
-            <span class="step-num">03</span>
-            <h3>Enjoy</h3>
-            <p>Access the full menu, the chill space and first look at new stock.</p>
-          </li>
-        </ol>
-      </div>
-    </section>
-
-    <!-- ============ VISIT ============ -->
-    <section class="section section-alt" id="visit">
-      <div class="container two-col">
-        <div>
-          <p class="eyebrow">Visit us</p>
-          <h2>Find the club</h2>
-          <p class="placeholder-note">Address, hours and contact details are placeholders. Send the real ones and they'll go here.</p>
-          <dl class="info">
-            <div><dt>Address</dt><dd>123 Example Street, Your Suburb, City, 0000</dd></div>
-            <div><dt>Phone / WhatsApp</dt><dd><a href="https://wa.me/27000000000">+27 00 000 0000</a></dd></div>
-            <div><dt>Email</dt><dd><a href="mailto:hello@smokeydreamz.co.za">hello@smokeydreamz.co.za</a></dd></div>
-          </dl>
-          <table class="hours">
-            <caption>Opening hours</caption>
-            <tbody>
-              <tr><th scope="row">Mon – Thu</th><td>10:00 – 20:00</td></tr>
-              <tr><th scope="row">Fri – Sat</th><td>10:00 – 22:00</td></tr>
-              <tr><th scope="row">Sunday</th><td>11:00 – 18:00</td></tr>
-              <tr><th scope="row">Public holidays</th><td>11:00 – 17:00</td></tr>
-            </tbody>
-          </table>
-          <p class="open-status" id="openStatus"></p>
-        </div>
-        <a class="map-card" href="https://www.google.com/maps/search/?api=1&amp;query=123+Example+Street" target="_blank" rel="noopener">
-          <img src="assets/photos/lion.jpg" alt="" width="120" height="120" />
-          <strong>Get directions</strong>
-          <span>Opens Google Maps</span>
-        </a>
-      </div>
-    </section>
-
-    <!-- ============ FAQ ============ -->
-    <section class="section" id="faq">
-      <div class="container narrow">
-        <div class="section-head">
-          <p class="eyebrow">FAQ</p>
-          <h2>Good questions</h2>
-        </div>
-        <div class="faq">
-          <details>
-            <summary>Is this legal?</summary>
-            <p>Under the Cannabis for Private Purposes Act, 2024, adults may use, possess and grow cannabis for private purposes. Smokey Dreamz operates as a private members' club: we don't sell to the public, and only registered adult members can take part. The law in this area is still developing, and we follow it closely.</p>
-          </details>
-          <details>
-            <summary>Can I just walk in?</summary>
-            <p>You need to be a registered member first. Applying takes a few minutes, and you finish signing up on your first visit with your ID.</p>
-          </details>
-          <details>
-            <summary>What do I need to bring?</summary>
-            <p>A valid South African ID, driver's licence or passport. We check the age of every member.</p>
-          </details>
-          <details>
-            <summary>I'm new to edibles. Where do I start?</summary>
-            <p>Start with a low dose, like a single 5mg gummy, and wait at least 90 minutes before taking more. The team can point you to beginner-friendly options.</p>
-          </details>
-          <details>
-            <summary>Can I smoke in public afterwards?</summary>
-            <p>No. Smoking cannabis in public or around children is not allowed. Enjoy responsibly, in private, and never drive under the influence.</p>
-          </details>
-        </div>
-      </div>
-    </section>
-
-    <!-- ============ JOIN ============ -->
-    <section class="section section-join" id="join">
-      <div class="container narrow">
-        <div class="section-head">
-          <p class="eyebrow">Join the club</p>
-          <h2>Apply for membership</h2>
-          <p>We'll get back to you within 24 hours to confirm your application.</p>
-        </div>
-        <form class="join-form" id="joinForm" novalidate>
-          <div class="field">
-            <label for="name">Full name</label>
-            <input id="name" name="name" type="text" autocomplete="name" required />
-          </div>
-          <div class="field-row">
-            <div class="field">
-              <label for="email">Email</label>
-              <input id="email" name="email" type="email" autocomplete="email" required />
-            </div>
-            <div class="field">
-              <label for="phone">Phone / WhatsApp</label>
-              <input id="phone" name="phone" type="tel" autocomplete="tel" placeholder="+27" required />
-            </div>
-          </div>
-          <div class="field">
-            <label for="dob">Date of birth</label>
-            <input id="dob" name="dob" type="date" required />
-          </div>
-          <label class="check">
-            <input type="checkbox" id="consent" required />
-            <span>I confirm I'm 18 or older, and I agree to the club rules and the processing of my details under POPIA.</span>
-          </label>
-          <button type="submit" class="btn btn-primary btn-block">Send application</button>
-          <p class="form-msg" id="formMsg" role="status"></p>
-        </form>
-      </div>
-    </section>
-  </main>
-
-  <!-- ============ FOOTER ============ -->
-  <footer class="site-footer">
-    <div class="container footer-inner">
-      <div>
-        <a href="#top" class="brand">
-          <img class="logo-mark" src="assets/photos/lion.jpg" alt="" width="42" height="42" />
-          <span class="brand-name">Smokey <em>Dreamz</em></span>
-        </a>
-        <p class="muted">Private members' cannabis club. South Africa.</p>
-      </div>
-      <nav class="footer-links" aria-label="Footer">
-        <a href="#menu">Menu</a>
-        <a href="#gallery">The shop</a>
-        <a href="#visit">Visit</a>
-        <a href="#faq">FAQ</a>
-        <a href="https://instagram.com/" rel="noopener">Instagram</a>
-      </nav>
     </div>
-    <div class="container disclaimer">
-      <p>For adults 18+ only. Smokey Dreamz is a private members' club and does not sell cannabis to the public. Nothing on this site is medical advice. Keep cannabis away from children, don't consume in public and never drive under the influence.</p>
-      <p>© <span id="year"></span> Smokey Dreamz. All rights reserved.</p>
-    </div>
-  </footer>
+  </section>
 
-  <script src="script.js"></script>
+  <section class="section section-alt" id="gallery">
+    <div class="wrap">
+      <div class="head reveal">
+        <span class="kicker">Step inside</span>
+        <h2><span class="drip">The Club</span></h2>
+      </div>
+      <div class="gallery" id="gallery-track">
+        <figure class="card shot"><img src="assets/img/shop-counter.webp" alt="The counter with pre-rolls and glass" loading="lazy"></figure>
+        <figure class="card shot"><img src="assets/img/shop-candyland.webp" alt="Candy Land edibles on display" loading="lazy"></figure>
+        <figure class="card shot"><img src="assets/img/shop-prerolls.webp" alt="Pre-rolls in glass tubes" loading="lazy"></figure>
+        <figure class="card shot"><img src="assets/img/shop-glass.webp" alt="Glass bongs and RAW accessories" loading="lazy"></figure>
+        <figure class="card shot"><img src="assets/img/shop-gummies.webp" alt="FAR and Medibles gummies" loading="lazy"></figure>
+        <figure class="card shot"><img src="assets/img/shop-suckers.webp" alt="Sucker THC lollipops" loading="lazy"></figure>
+      </div>
+      <div class="dots" id="gallery-dots"></div>
+    </div>
+  </section>
+
+  <section class="section" id="membership">
+    <div class="wrap">
+      <div class="head reveal">
+        <span class="kicker">Easy as 1, 2, 3</span>
+        <h2><span class="drip">How It Works</span></h2>
+      </div>
+      <ol class="steps">
+        <li class="card reveal"><div class="num">1</div><h3>Apply</h3><p>Fill in the short form below. It goes straight to us on WhatsApp.</p></li>
+        <li class="card reveal"><div class="num">2</div><h3>Bring your ID</h3><p>Pop in with a valid ID or passport so we can confirm you're 18+.</p></li>
+        <li class="card reveal"><div class="num">3</div><h3>Enjoy</h3><p>You're in. Kick back, explore the wall and enjoy the club.</p></li>
+      </ol>
+    </div>
+  </section>
+
+  <section class="section section-alt" id="visit">
+    <div class="wrap">
+      <div class="head reveal">
+        <span class="kicker">Come through</span>
+        <h2><span class="drip">Visit Us</span></h2>
+      </div>
+      <div class="visit-grid">
+        <div class="card visit-card reveal left">
+          <h3>Find the club</h3>
+          <ul class="info-list">
+            <li><span class="i">📍</span><div><b>Address</b><span id="addr"></span></div></li>
+            <li><span class="i">💬</span><div><b>WhatsApp</b><span id="waText"></span></div></li>
+          </ul>
+          <div class="btn-row">
+            <a class="btn" id="mapBtn" href="#" target="_blank" rel="noopener">Open in Google Maps</a>
+            <a class="btn ghost" id="waBtn" href="#" target="_blank" rel="noopener">WhatsApp us</a>
+          </div>
+        </div>
+        <div class="card visit-card reveal right">
+          <h3>Opening hours</h3>
+          <div class="open-status" id="openStatus">Checking…</div>
+          <table class="hours" id="hours"></table>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="faq">
+    <div class="wrap">
+      <div class="head reveal">
+        <span class="kicker">Good questions</span>
+        <h2><span class="drip">FAQ</span></h2>
+      </div>
+      <div class="faq">
+        <details class="card reveal"><summary>Is this legal?</summary><p>The Cannabis for Private Purposes Act, 2024 allows adults to use and grow cannabis privately, but it does not allow public sales. Smokey Dreamz runs as a private members' club: we don't sell to the public, don't sell online and don't deliver. Members share in the club and make contributions.</p></details>
+        <details class="card reveal"><summary>What ID do I need?</summary><p>A valid South African ID, driver's licence or passport. Every member must be 18 or older, and we check ID when you sign up.</p></details>
+        <details class="card reveal"><summary>Any advice on edibles?</summary><p>Start low and go slow. Edibles can take 30 minutes to 2 hours to kick in, and they last longer than smoking. Take a small amount, wait, and don't mix with alcohol. Ask us if you're unsure.</p></details>
+        <details class="card reveal"><summary>Can I smoke in public?</summary><p>No. Smoking cannabis in public is not allowed. Enjoy it privately, never drive after using, and keep it away from children.</p></details>
+        <details class="card reveal"><summary>Do you deliver or sell online?</summary><p>No. Everything happens in person, inside the club, for members only.</p></details>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section-alt" id="join">
+    <div class="wrap join-grid">
+      <div class="join-art reveal left">
+        <img src="assets/art/lion.svg" alt="" width="340" height="398" loading="lazy">
+        <h2 class="title">Join the club</h2>
+        <p>Fill this in and it opens WhatsApp with your details ready to send. We'll reply to arrange your first visit.</p>
+      </div>
+      <form class="card reveal right" id="joinForm" novalidate>
+        <div class="fields">
+          <div class="field full"><label for="f-name">Full name</label><input id="f-name" name="name" autocomplete="name" required></div>
+          <div class="field"><label for="f-email">Email</label><input id="f-email" name="email" type="email" autocomplete="email" required></div>
+          <div class="field"><label for="f-wa">WhatsApp number</label><input id="f-wa" name="wa" type="tel" inputmode="tel" autocomplete="tel" placeholder="e.g. 082 123 4567" required pattern="[0-9 +()-]{9,}"></div>
+          <div class="field full"><label for="f-dob">Date of birth</label><input id="f-dob" name="dob" type="date" required></div>
+          <label class="check"><input type="checkbox" name="adult" required> I confirm I am 18 years or older.</label>
+          <label class="check"><input type="checkbox" name="popia" required> I agree that Smokey Dreamz may use my details to process my membership, in line with POPIA. My details won't be shared or sold.</label>
+        </div>
+        <button class="btn green" type="submit">Send my application</button>
+        <p class="form-msg" id="formMsg" role="status"></p>
+      </form>
+    </div>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <img class="wm" src="assets/art/wordmark.svg" alt="Smokey Dreamz" loading="lazy">
+  <div class="socials">
+    <a id="igLink" href="#" target="_blank" rel="noopener" aria-label="Instagram"><svg viewBox="0 0 24 24"><path d="M12 7a5 5 0 1 0 0 10 5 5 0 0 0 0-10zm0 8.2a3.2 3.2 0 1 1 0-6.4 3.2 3.2 0 0 1 0 6.4zM17.3 5.5a1.2 1.2 0 1 0 0 2.4 1.2 1.2 0 0 0 0-2.4zM21.9 7.1c-.1-1.6-.4-3-1.6-4.2S17.6 1.3 16 1.2C14.3 1.1 9.7 1.1 8 1.2c-1.6.1-3 .4-4.2 1.6S2.2 5.5 2.1 7.1C2 8.8 2 13.2 2.1 15c.1 1.6.4 3 1.6 4.2s2.6 1.5 4.2 1.6c1.7.1 6.3.1 8 0 1.6-.1 3-.4 4.2-1.6s1.5-2.6 1.6-4.2c.1-1.8.1-6.2 0-7.9zm-2.1 9.8a3.3 3.3 0 0 1-1.8 1.8c-1.3.5-4.3.4-5.6.4s-4.4.1-5.6-.4a3.3 3.3 0 0 1-1.9-1.8C4.4 15.6 4.5 12.6 4.5 11.3s-.1-4.4.4-5.6A3.3 3.3 0 0 1 6.7 3.8c1.3-.5 4.3-.4 5.6-.4s4.4-.1 5.6.4a3.3 3.3 0 0 1 1.9 1.9c.5 1.3.4 4.3.4 5.6s.1 4.4-.4 5.6z"/></svg></a>
+    <a id="fbLink" href="#" target="_blank" rel="noopener" aria-label="Facebook"><svg viewBox="0 0 24 24"><path d="M14 8V6.2c0-.8.2-1.2 1.4-1.2H17V2h-2.6C11.3 2 10.3 3.5 10.3 6v2H8v3h2.3v11H14V11h2.7l.4-3H14z"/></svg></a>
+  </div>
+  <p class="disclaimer"><strong>18+ only.</strong> Smokey Dreamz is a private members' club. We do not sell cannabis to the public, online or by delivery. Information on this site is for members and is not an offer for sale. Use responsibly and privately, never drive under the influence, and keep cannabis away from children and pets.</p>
+  <p class="copy-line">© <span id="year"></span> Smokey Dreamz · South Africa</p>
+</footer>
+
+<a class="wa-float" id="waFloat" href="#" target="_blank" rel="noopener" aria-label="Chat on WhatsApp"><svg viewBox="0 0 24 24"><path d="M17.5 14.4c-.3-.1-1.8-.9-2-1-.3-.1-.5-.1-.7.1-.2.3-.8 1-.9 1.2-.2.2-.3.2-.6.1-.3-.1-1.3-.5-2.4-1.5-.9-.8-1.5-1.8-1.7-2.1-.2-.3 0-.5.1-.6l.4-.5c.2-.2.2-.3.3-.5.1-.2 0-.4 0-.5l-.9-2.2c-.2-.6-.5-.5-.7-.5h-.6c-.2 0-.5.1-.8.4-.3.3-1 1-1 2.5s1.1 2.9 1.2 3.1c.1.2 2.1 3.2 5.1 4.5.7.3 1.3.5 1.7.6.7.2 1.4.2 1.9.1.6-.1 1.8-.7 2-1.4.2-.7.2-1.3.2-1.4-.1-.2-.3-.3-.6-.4zM12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm0 18.2c-1.5 0-3-.4-4.2-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2z"/></svg></a>
+
+<script src="script.js" defer></script>
 </body>
 </html>

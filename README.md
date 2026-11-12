@@ -1,26 +1,22 @@
-# Smokey Dreamz website
+# Smokey Dreamz website (v2)
 
-A static site: plain HTML, CSS and JS with no build step. Open `index.html` in a browser, or host it free on Netlify, Vercel, Cloudflare Pages or GitHub Pages.
+Static site: plain HTML, CSS and JS, no build step. Hosted on Render as a static site (`render.yaml`).
+
+## Edit your details
+Open `script.js` and fill in `CONFIG` at the top: address, WhatsApp number (digits only, e.g. `27821234567`), Instagram, Facebook and opening hours. The open/closed sign, Google Maps button, WhatsApp button and join form all read from it.
+
+## Edit the menu
+`MENU` in `script.js`. `price: null` (or no price) shows "Ask in store". Photos live in `assets/img/` as `.webp`.
 
 ## Files
-- `index.html`: all page sections (age gate, hero, about, menu, membership, visit, FAQ, join form, footer)
-- `styles.css`: theme colours are at the top under `:root`
-- `script.js`: menu data (`MENU`), opening hours (`HOURS`), form handling, animations
-- `assets/`: favicon, shop photos and product close-ups
+- `index.html` – all sections (age gate, hologram intro, hero, about, menu, chill bar, gallery, membership, visit, FAQ, join, footer)
+- `styles.css` – theme colours at the top under `:root`
+- `script.js` – config, menu data, carousels, open/closed logic, form → WhatsApp
+- `assets/art/` – lion mascot, wordmark, slime edge, boba (SVG)
+- `tools/` – Python scripts that generate the lion and wordmark SVGs
 
-## Done
-- [x] Lion logo, favicon and hero sign (from shop photos, in `assets/photos/`)
-- [x] Real menu: strain wall, pre-rolls, edibles, glass and gear (`STRAINS` and `MENU` in `script.js`, photos in `assets/products/`)
-- [x] Shop photo gallery
-
-## Still to replace
-- [ ] Address, phone/WhatsApp, email (`#visit` section in `index.html`)
-- [ ] Google Maps link in the `.map-card` (`index.html`)
-- [ ] Opening hours: both the table in `index.html` and `HOURS` in `script.js`
-- [ ] Contributions for each menu item (`price: null` shows "Ask in store")
-- [ ] Membership fees, if you want them shown
-- [ ] Instagram / socials link in the footer
-- [ ] Join form: connect it to WhatsApp, Formspree or Netlify Forms (see the `TODO` in `script.js`)
+## Deploy on Render
+New → Blueprint → pick this repo and the `website-v2` branch. Render reads `render.yaml` and publishes the site.
 
 ## Legal notes (South Africa)
-The Cannabis for Private Purposes Act, 2024 permits private adult use and cultivation but prohibits dealing. The site is written around a private members' club model: "contributions" instead of prices, no public sales, an 18+ age gate and a POPIA consent box. Have a lawyer check the copy before going live, because club legality is still before the courts.
+Written around a private members' club model under the Cannabis for Private Purposes Act, 2024: "contributions", no public sales, no online sales or delivery, an 18+ age gate and a POPIA consent box. Have a lawyer check the copy before going live.
