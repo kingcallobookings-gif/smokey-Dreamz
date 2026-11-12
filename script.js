@@ -26,11 +26,14 @@
       ],
     },
     preroll: {
-      label: "Pre-rolls", title: "Pre-rolls", note: "Sealed tubes, ready when you are.",
+      label: "Pre-rolls", title: "Pre-rolls", note: "Tap a tube to pop it open.",
+      tubes: [
+        { name: "White Wedding", id: "white-wedding", w: 220, h: 1021, cap: 163, glow: "#ff3b4f" },
+        { name: "Fruit Salad", id: "fruit-salad", w: 220, h: 988, cap: 103, glow: "#3b82f6" },
+        { name: "Ethos Cookies", id: "ethos-cookies", w: 220, h: 1101, cap: 132, glow: "#8b5cf6" },
+        { name: "House pre-rolls", glass: true, w: 220, h: 1000, cap: 110, glow: "#ffcc33" },
+      ],
       items: [
-        { name: "White Wedding", detail: "Pre-roll in a sealed tube", img: "white-wedding" },
-        { name: "Fruit Salad", detail: "Pre-roll in a sealed tube", img: "fruit-salad" },
-        { name: "Ethos Cookies", detail: "Pre-roll in a sealed tube", img: "ethos-cookies" },
         { name: "Captain Crunch", detail: "Pre-roll in a sealed tube", img: "captain-crunch" },
         { name: "House pre-rolls", detail: "Rolled in-house, in glass tubes. Ask what's rolled today", img: "house-prerolls" },
       ],
@@ -139,10 +142,17 @@
   }
   panels.innerHTML = keys.map((k, i) => {
     const c = MENU[k];
+    const tubeHTML = (t) => `<button class="tube${t.glass ? " glass" : ""}" style="--w:${t.w};--h:${t.h};--cap:${t.cap};--glow:${t.glow}" aria-pressed="false" aria-label="Open the ${esc(t.name)} tube">
+        <span class="tube-stage"><img class="joint" src="assets/art/joint.svg" alt="" loading="lazy">${t.glass
+          ? `<span class="t-cap glass-cap"></span><span class="t-body glass-body"></span>`
+          : `<img class="t-cap" src="assets/tubes/${t.id}-cap.webp" alt="" loading="lazy"><img class="t-body" src="assets/tubes/${t.id}-body.webp" alt="${esc(t.name)} pre-roll tube" loading="lazy">`}</span>
+        <span class="tube-name">${esc(t.name)}</span><span class="tube-hint">Tap to open</span></button>`;
     const body = c.strains
       ? `<div class="strain-wall">${c.strains.map(([n, c1, c2]) => `<div class="card strain" style="--c1:${c1};--c2:${c2}"><span class="jar"></span><h4>${esc(n)}</h4><small>Ask in store</small></div>`).join("")}</div>`
+      : c.tubes
+      ? `<div class="rack">${c.tubes.map(tubeHTML).join("")}</div><div class="rack-shelf"></div><p class="rack-note">All pre-rolls: Ask in store for today's contributions.</p><div class="extra-row">${c.items.map((it) => itemCard(it, c.label)).join("")}</div>`
       : `<div class="carousel" id="car-${k}">${c.items.map((it) => itemCard(it, c.label)).join("")}</div>`;
-    const nav = c.strains ? "" : `<div class="car-nav"><button class="car-btn" data-car="car-${k}" data-dir="-1" aria-label="Previous">‹</button><button class="car-btn" data-car="car-${k}" data-dir="1" aria-label="Next">›</button></div>`;
+    const nav = (c.strains || c.tubes) ? "" : `<div class="car-nav"><button class="car-btn" data-car="car-${k}" data-dir="-1" aria-label="Previous">‹</button><button class="car-btn" data-car="car-${k}" data-dir="1" aria-label="Next">›</button></div>`;
     return `<div class="panel${i === 0 ? " active" : ""}" role="tabpanel" id="panel-${k}" aria-labelledby="tab-${k}"><div class="panel-intro"><div><h3>${c.title}</h3><p>${c.note}</p></div>${nav}</div>${body}</div>`;
   }).join("");
   tabs.addEventListener("click", (e) => {
@@ -156,6 +166,77 @@
     const car = document.getElementById(b.dataset.car);
     car.scrollBy({ left: Number(b.dataset.dir) * car.clientWidth * 0.8, behavior: "smooth" });
   });
+
+  /* ---------- Smoke puffs (click anything tasty) ---------- */
+  const puffLayer = document.createElement("div"); puffLayer.className = "puff-layer"; document.body.appendChild(puffLayer);
+  function smokeBurst(x, y, n = 9, spread = 1) {
+    if (reduce) return;
+    for (let i = 0; i < n; i++) {
+      const p = document.createElement("span"); p.className = "sp";
+      p.style.left = x + "px"; p.style.top = y + "px";
+      puffLayer.appendChild(p);
+      const dx = (Math.random() - 0.5) * 120 * spread, dy = -(80 + Math.random() * 160) * spread, s = 1.6 + Math.random() * 2.4;
+      const anim = p.animate([
+        { transform: "translate(0,0) scale(.4)", opacity: 0 },
+        { transform: `translate(${dx * 0.3}px,${dy * 0.3}px) scale(${s * 0.6})`, opacity: 0.9, offset: 0.2 },
+        { transform: `translate(${dx}px,${dy}px) scale(${s})`, opacity: 0 },
+      ], { duration: 1600 + Math.random() * 1200, easing: "cubic-bezier(.2,.7,.3,1)", delay: i * 40 });
+      anim.onfinish = () => p.remove();
+    }
+  }
+  document.addEventListener("click", (e) => {
+    const t = e.target.closest(".item, .strain, .bar-card, .chip, .shot, .feature, .hero-lion");
+    if (t && !e.target.closest(".tube")) smokeBurst(e.clientX, e.clientY);
+  });
+
+  /* ---------- Pre-roll tubes: pop the cap, joint slides out ---------- */
+  panels.addEventListener("click", (e) => {
+    const tube = e.target.closest(".tube"); if (!tube) return;
+    const open = !tube.classList.contains("open");
+    tube.classList.toggle("open", open);
+    tube.setAttribute("aria-pressed", String(open));
+    tube.querySelector(".tube-hint").textContent = open ? "Tap to close" : "Tap to open";
+    if (open) setTimeout(() => {
+      const j = tube.querySelector(".joint").getBoundingClientRect();
+      smokeBurst(j.left + j.width / 2, j.top + 4, 12, 0.8);
+    }, 650);
+  });
+
+  /* ---------- Constant rising smoke ---------- */
+  const cv = document.createElement("canvas"); cv.id = "smokeCanvas"; cv.setAttribute("aria-hidden", "true");
+  document.body.insertBefore(cv, document.body.firstChild);
+  const cx2 = cv.getContext("2d");
+  let SW = 0, SH = 0, wisps = [];
+  const puffSprite = (() => {
+    const c = document.createElement("canvas"); c.width = c.height = 128; const g = c.getContext("2d");
+    const gr = g.createRadialGradient(64, 64, 0, 64, 64, 64);
+    gr.addColorStop(0, "rgba(235,222,255,.55)"); gr.addColorStop(.5, "rgba(190,160,255,.18)"); gr.addColorStop(1, "rgba(160,120,255,0)");
+    g.fillStyle = gr; g.fillRect(0, 0, 128, 128); return c;
+  })();
+  function sizeSmoke() {
+    const dpr = Math.min(window.devicePixelRatio || 1, 1.5);
+    SW = innerWidth; SH = innerHeight; cv.width = SW * dpr; cv.height = SH * dpr; cx2.setTransform(dpr, 0, 0, dpr, 0, 0);
+    const n = Math.round(Math.min(34, SW / 30));
+    wisps = Array.from({ length: n }, () => newWisp(true));
+  }
+  function newWisp(anywhere) {
+    return { x: Math.random() * SW, y: anywhere ? Math.random() * SH : SH + 80, r: 50 + Math.random() * 120,
+      vy: -(0.25 + Math.random() * 0.55), ph: Math.random() * 6.28, a: 0.25 + Math.random() * 0.45, g: 1.0006 + Math.random() * 0.0012 };
+  }
+  let last = 0;
+  function smokeTick(t) {
+    requestAnimationFrame(smokeTick);
+    if (document.hidden || t - last < 33) return; last = t;
+    cx2.clearRect(0, 0, SW, SH);
+    for (const w of wisps) {
+      w.y += w.vy; w.ph += 0.01; w.x += Math.sin(w.ph) * 0.4; w.r *= w.g;
+      const life = Math.min(1, (SH + 80 - w.y) / 200) * Math.min(1, w.y / (SH * 0.5));
+      cx2.globalAlpha = Math.max(0, w.a * life);
+      cx2.drawImage(puffSprite, w.x - w.r, w.y - w.r, w.r * 2, w.r * 2);
+      if (w.y < -w.r) Object.assign(w, newWisp(false));
+    }
+  }
+  if (!reduce) { sizeSmoke(); addEventListener("resize", sizeSmoke); requestAnimationFrame(smokeTick); }
 
   /* ---------- Gallery dots + auto-advance ---------- */
   const gal = $("#gallery-track"), dots = $("#gallery-dots");

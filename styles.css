@@ -393,3 +393,47 @@ main{overflow-x:hidden}
 [hidden]{display:none!important}
 .about-art img{aspect-ratio:1;object-fit:cover;height:auto}
 @media (max-width:900px){.slime-top{height:56px;background-size:1000px 56px}.hero{padding-top:120px}}
+
+/* ---------- smoke canvas + click puffs ---------- */
+#smokeCanvas{position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:1}
+.puff-layer{position:fixed;inset:0;pointer-events:none;z-index:60;overflow:hidden}
+.sp{position:absolute;width:46px;height:46px;margin:-23px 0 0 -23px;border-radius:50%;
+  background:radial-gradient(circle,rgba(245,237,255,.75),rgba(200,170,255,.35) 45%,transparent 70%);filter:blur(3px)}
+
+/* ---------- pre-roll tube rack ---------- */
+.rack{position:relative;display:flex;gap:clamp(18px,4vw,46px);justify-content:center;align-items:flex-end;flex-wrap:nowrap;overflow-x:auto;
+  padding:30px 12px 0;scroll-snap-type:x mandatory;scrollbar-width:none}
+.rack::-webkit-scrollbar{display:none}
+.rack-shelf{height:22px;margin:0 6px 26px;border-radius:0 0 18px 18px;background:linear-gradient(180deg,rgba(233,213,255,.35),rgba(124,58,237,.15));
+  box-shadow:0 0 30px rgba(57,255,106,.25),inset 0 2px 0 rgba(255,255,255,.4);border-top:2px solid rgba(233,213,255,.6)}
+.tube{--tw:84px;flex:0 0 auto;scroll-snap-align:center;display:flex;flex-direction:column;align-items:center;gap:6px;background:none;border:0;color:#fff;padding:0 4px;-webkit-tap-highlight-color:transparent}
+.tube-stage{position:relative;display:block;width:var(--tw);padding-top:calc(var(--tw) * 2.3);
+  filter:drop-shadow(0 14px 18px rgba(0,0,0,.55))}
+.tube-stage::before{content:"";position:absolute;left:-30%;right:-30%;bottom:6%;height:70%;border-radius:50%;background:radial-gradient(closest-side,var(--glow),transparent);opacity:.35;transition:opacity .4s}
+.tube:hover .tube-stage::before,.tube.open .tube-stage::before{opacity:.7}
+.tube .t-cap,.tube .t-body{position:relative;display:block;width:100%;z-index:2}
+.tube .t-cap{height:calc(var(--tw) * var(--cap) / var(--w));z-index:3;transition:transform .55s cubic-bezier(.34,1.6,.64,1)}
+.tube .t-body{height:calc(var(--tw) * (var(--h) - var(--cap)) / var(--w))}
+.tube img.t-cap,.tube img.t-body{object-fit:fill}
+.tube .joint{position:absolute;z-index:1;left:27%;width:46%;height:calc(var(--tw) * 2.6);
+  top:calc(var(--tw) * 2.3 + var(--tw) * var(--cap) / var(--w) * .6);transition:transform .7s cubic-bezier(.2,1.3,.4,1) .18s}
+.tube.open .t-cap{transform:translate(calc(var(--tw) * .55),calc(var(--tw) * -1.9)) rotate(38deg)}
+.tube.open .joint{transform:translateY(calc(var(--tw) * -2.05))}
+.tube:hover:not(.open) .t-cap{transform:translateY(-6px) rotate(-4deg)}
+.tube-name{font:800 .98rem Syne,sans-serif;text-align:center;max-width:130px;line-height:1.15;margin-top:8px}
+.tube-hint{font:700 .7rem Syne,sans-serif;letter-spacing:.14em;text-transform:uppercase;color:var(--green);opacity:.85}
+.tube.open .tube-hint{color:var(--gold)}
+/* glass house tube */
+.glass-cap{background:linear-gradient(90deg,#c9900e,#ffd54a 35%,#ffe58a 45%,#d39a12);border-radius:10px 10px 4px 4px;border:2px solid rgba(0,0,0,.35)}
+.glass-body{background:linear-gradient(90deg,rgba(255,255,255,.28),rgba(255,255,255,.06) 25%,rgba(255,255,255,.02) 60%,rgba(255,255,255,.22) 85%,rgba(255,255,255,.08));
+  border:2px solid rgba(255,255,255,.45);border-top:0;border-radius:0 0 18px 18px;backdrop-filter:blur(.5px)}
+.tube.glass .joint{z-index:1}
+.tube.glass .t-body{z-index:2}
+.rack-note{text-align:center;color:var(--muted);font-size:.9rem;margin-bottom:22px}
+.extra-row{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:18px}
+@media (min-width:900px){.tube{--tw:96px}}
+.rack{justify-content:safe center}
+.tube .joint{top:calc(var(--tw) * 2.3 + var(--tw) * var(--cap) / var(--w) + 8px)}
+@media (max-width:520px){.tube{--tw:66px;padding:0}.rack{gap:14px;padding-inline:4px}.tube-name{font-size:.82rem;max-width:84px}.tube-hint{font-size:.6rem;letter-spacing:.08em}}
+@media (max-width:520px){.tube{width:76px}.tube-name{max-width:76px;font-size:.78rem}.rack{gap:8px}}
+.rack{overflow:visible}
