@@ -437,3 +437,4 @@ main{overflow-x:hidden}
 @media (max-width:520px){.tube{--tw:66px;padding:0}.rack{gap:14px;padding-inline:4px}.tube-name{font-size:.82rem;max-width:84px}.tube-hint{font-size:.6rem;letter-spacing:.08em}}
 @media (max-width:520px){.tube{width:76px}.tube-name{max-width:76px;font-size:.78rem}.rack{gap:8px}}
 .rack{overflow:visible}
+.tube .joint{left:22%;width:56%;height:calc(var(--tw) * 2.7)}
