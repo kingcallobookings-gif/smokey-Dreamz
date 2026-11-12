@@ -44,36 +44,41 @@
   );
 
   /* ---------- Menu ----------
-     SAMPLE DATA: replace with the club's real strains, edibles and gear.
-     price = member contribution in Rand. */
+     Taken from the shop photos. img = file in assets/products. price: Rand amount, or null to show "Ask in store". */
+  const STRAINS = ["Sweets", "Gabriel's Crown", "Planet of the Grapes", "Space Jam", "Blue Cheese",
+                   "Cupid's Kush", "GMO", "London Lobster", "Rainbow Sherbet"];
   const MENU = [
-    { name: "Midnight Haze",    type: "indica", thc: "24%", price: 120, unit: "/g",    emoji: "🌙", desc: "Heavy, calming body high. Earthy grape and pine. A nightcap in a jar." },
-    { name: "Durban Poison",    type: "sativa", thc: "21%", price: 110, unit: "/g",    emoji: "⚡", desc: "South Africa's legendary landrace. Sweet anise, clear-headed and energising." },
-    { name: "Cloud Candy",      type: "hybrid", thc: "22%", price: 115, unit: "/g",    emoji: "☁️", desc: "Balanced and social. Berry sweetness with a soft, floaty finish." },
-    { name: "Purple Dreamz",    type: "indica", thc: "26%", price: 140, unit: "/g",    emoji: "💜", desc: "Our house signature. Deep purple buds, lavender and dark fruit." },
-    { name: "Cape Sunrise",     type: "sativa", thc: "19%", price: 100, unit: "/g",    emoji: "🌅", desc: "Bright citrus, creative buzz. Made for daytime and good conversation." },
-    { name: "Smokey OG",        type: "hybrid", thc: "25%", price: 130, unit: "/g",    emoji: "🔥", desc: "Fuel, pepper and lemon. Full-bodied and properly relaxing." },
-    { name: "Dreamy Gummies",   type: "edible", thc: "10mg each", price: 180, unit: "/pack of 10", emoji: "🍬", desc: "Mixed berry gummies. Start with one, wait 90 minutes." },
-    { name: "Choc Haze Brownie",type: "edible", thc: "20mg", price: 85,  unit: "/each",  emoji: "🍫", desc: "Rich dark-chocolate brownie, baked in house." },
-    { name: "Glass Bubbler",    type: "gear",   thc: null,  price: 450, unit: "",       emoji: "🫧", desc: "Hand-blown borosilicate bubbler. Smooth hits, easy to clean." },
-    { name: "Smokey Dreamz Grinder", type: "gear", thc: null, price: 250, unit: "",    emoji: "⚙️", desc: "4-piece aluminium grinder with kief catcher. Laser-etched logo." },
+    { name: "White Wedding",        cat: "preroll", detail: "Pre-roll in a sealed tube",             price: null, img: "white-wedding" },
+    { name: "Fruit Salad",          cat: "preroll", detail: "Pre-roll in a sealed tube",             price: null, img: "fruit-salad" },
+    { name: "Captain Crunch",       cat: "preroll", detail: "Pre-roll in a sealed tube",             price: null, img: "captain-crunch" },
+    { name: "House pre-rolls",      cat: "preroll", detail: "Cones in clear tubes. Ask what's rolled today", price: null, img: "house-prerolls" },
+    { name: "Sour Snakes",          cat: "edible",  detail: "Candy Land · Indica · 5 × 60mg = 300mg", price: null, img: "sour-snakes" },
+    { name: "Itty Bitty Tiddies",   cat: "edible",  detail: "Candy Land · Sativa · 3 × 40mg = 120mg", price: null, img: "itty-bitty" },
+    { name: "Mini Weed Leaves",     cat: "edible",  detail: "Candy Land · Indica · 10 × 5mg = 50mg",  price: null, img: "mini-leaves" },
+    { name: "Around the Block",     cat: "edible",  detail: "Candy Land · Indica · 2 × 80mg = 160mg", price: null, img: "around-block" },
+    { name: "Sucker THC lollipops", cat: "edible",  detail: "Candy Land · 10, 25, 50 or 100mg",       price: null, img: "sucker" },
+    { name: "FAR Pink Lemonade",    cat: "edible",  detail: "Fast-acting rosin gummies · 10 × 5mg",   price: null, img: "far" },
+    { name: "Medibles Lychee",      cat: "edible",  detail: "Full-spectrum gummies · 5 × 30mg = 150mg", price: null, img: "medibles" },
+    { name: "Rolo's",               cat: "edible",  detail: "Sativa · 5 × 20mg = 100mg",              price: null, img: "rolos" },
+    { name: "Glass bongs",          cat: "gear",    detail: "Percolator, beaker and novelty pieces",  price: null, img: "bongs" },
+    { name: "RAW Hemp Wick",        cat: "gear",    detail: "Natural hemp and beeswax · 6m",          price: 30,   img: "hemp-wick" },
+    { name: "Smoking screens",      cat: "gear",    detail: "5 screens per wallet pack",              price: null, img: "screens" },
   ];
-  const COLORS = { indica: "var(--indica)", sativa: "var(--sativa)", hybrid: "var(--hybrid)", edible: "var(--pink)", gear: "#8ec5ff" };
-  const LABELS = { indica: "Indica", sativa: "Sativa", hybrid: "Hybrid", edible: "Edible", gear: "Gear" };
+  const LABELS = { preroll: "Pre-roll", edible: "Edible", gear: "Glass & gear" };
   const grid = document.getElementById("menuGrid");
   const fmt = (n) => "R" + n.toLocaleString("en-ZA");
+  document.getElementById("strains").innerHTML = STRAINS.map((s) => `<li>${s}</li>`).join("");
 
   function renderMenu(filter) {
-    const items = filter === "all" ? MENU : MENU.filter((m) => m.type === filter);
+    const items = filter === "all" ? MENU : MENU.filter((m) => m.cat === filter);
     grid.innerHTML = items.map((m, i) => `
-      <article class="product" style="--c:${COLORS[m.type]};animation-delay:${i * 50}ms">
-        <div class="product-art" aria-hidden="true">${m.emoji}</div>
-        <span class="tag">${LABELS[m.type]}</span>
-        <h3>${m.name}</h3>
-        <p class="desc">${m.desc}</p>
-        <div class="meta">
-          <span>${m.thc ? "THC " + m.thc : "Accessory"}</span>
-          <span><span class="price">${fmt(m.price)}</span>${m.unit}</span>
+      <article class="product cat-${m.cat}" style="animation-delay:${i * 40}ms">
+        <div class="product-art"><img src="assets/products/${m.img}.jpg" alt="${m.name}" loading="lazy" width="640" height="480" /></div>
+        <div class="product-body">
+          <span class="tag">${LABELS[m.cat]}</span>
+          <h3>${m.name}</h3>
+          <p class="desc">${m.detail}</p>
+          <div class="meta">${m.price ? `<span class="price">${fmt(m.price)}</span>` : `<span class="ask">Ask in store</span>`}</div>
         </div>
       </article>`).join("");
   }
@@ -87,7 +92,6 @@
     })
   );
   renderMenu("all");
-
   /* ---------- Open / closed (South Africa time) ---------- */
   const HOURS = { 0: [11, 18], 1: [10, 20], 2: [10, 20], 3: [10, 20], 4: [10, 20], 5: [10, 22], 6: [10, 22] };
   const status = document.getElementById("openStatus");
@@ -161,7 +165,7 @@
       vy: -(Math.random() * 0.35 + 0.1),
       vx: (Math.random() - 0.5) * 0.2,
       a: Math.random() * 0.6 + 0.2,
-      hue: [270, 310, 135][Math.floor(Math.random() * 3)],
+      hue: [0, 48, 130, 280][Math.floor(Math.random() * 4)],
     }));
   }
   function tick() {
