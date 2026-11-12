@@ -175,12 +175,12 @@
       const p = document.createElement("span"); p.className = "sp";
       p.style.left = x + "px"; p.style.top = y + "px";
       puffLayer.appendChild(p);
-      const dx = (Math.random() - 0.5) * 120 * spread, dy = -(80 + Math.random() * 160) * spread, s = 1.6 + Math.random() * 2.4;
+      const dx = (Math.random() - 0.5) * 90 * spread, dy = -(90 + Math.random() * 140) * spread, s = 1.8 + Math.random() * 2;
       const anim = p.animate([
         { transform: "translate(0,0) scale(.4)", opacity: 0 },
-        { transform: `translate(${dx * 0.3}px,${dy * 0.3}px) scale(${s * 0.6})`, opacity: 0.9, offset: 0.2 },
+        { transform: `translate(${dx * 0.25}px,${dy * 0.25}px) scale(${s * 0.55})`, opacity: 0.7, offset: 0.25 },
         { transform: `translate(${dx}px,${dy}px) scale(${s})`, opacity: 0 },
-      ], { duration: 1600 + Math.random() * 1200, easing: "cubic-bezier(.2,.7,.3,1)", delay: i * 40 });
+      ], { duration: 2200 + Math.random() * 1400, easing: "cubic-bezier(.22,1,.36,1)", delay: i * 60 });
       anim.onfinish = () => p.remove();
     }
   }
@@ -189,17 +189,34 @@
     if (t && !e.target.closest(".tube")) smokeBurst(e.clientX, e.clientY);
   });
 
-  /* ---------- Pre-roll tubes: pop the cap, joint slides out ---------- */
-  panels.addEventListener("click", (e) => {
-    const tube = e.target.closest(".tube"); if (!tube) return;
-    const open = !tube.classList.contains("open");
-    tube.classList.toggle("open", open);
+  /* ---------- Pre-roll tubes: squeeze → lid flips on its hinge → joint eases out → smoke ---------- */
+  const tubeSmoke = new WeakMap();
+  function tipPoint(tube) { const j = tube.querySelector(".joint").getBoundingClientRect(); return [j.left + j.width / 2, j.top + 2]; }
+  function setTube(tube, open) {
+    if (tube.dataset.busy) return;
+    tube.dataset.busy = "1"; setTimeout(() => delete tube.dataset.busy, 700);
     tube.setAttribute("aria-pressed", String(open));
     tube.querySelector(".tube-hint").textContent = open ? "Tap to close" : "Tap to open";
-    if (open) setTimeout(() => {
-      const j = tube.querySelector(".joint").getBoundingClientRect();
-      smokeBurst(j.left + j.width / 2, j.top + 4, 12, 0.8);
-    }, 650);
+    clearInterval(tubeSmoke.get(tube));
+    if (open) {
+      tube.classList.add("squeeze");
+      setTimeout(() => { tube.classList.remove("squeeze"); tube.classList.add("open"); }, 160);
+      setTimeout(() => {
+        if (!tube.classList.contains("open")) return;
+        const [x, y] = tipPoint(tube); smokeBurst(x, y, 6, 0.55);
+        tubeSmoke.set(tube, setInterval(() => {
+          if (!tube.classList.contains("open") || document.hidden) return;
+          const r = tube.getBoundingClientRect(); if (r.bottom < 0 || r.top > innerHeight) return;
+          const [tx, ty] = tipPoint(tube); smokeBurst(tx, ty, 2, 0.4);
+        }, 650));
+      }, 1500);
+    } else {
+      tube.classList.remove("open");
+    }
+  }
+  panels.addEventListener("click", (e) => {
+    const tube = e.target.closest(".tube"); if (!tube) return;
+    setTube(tube, !tube.classList.contains("open"));
   });
 
   /* ---------- Constant rising smoke ---------- */
@@ -326,7 +343,7 @@
   if (!reduce && window.matchMedia("(pointer:fine)").matches) {
     window.addEventListener("pointermove", (e) => {
       const x = e.clientX / innerWidth - 0.5, y = e.clientY / innerHeight - 0.5;
-      stage.style.transform = `translate(${x * 18}px, ${y * 14}px) rotate(${x * 3}deg)`;
+      stage.style.transform = `translate(${x * 14}px, ${y * 10}px)`;
     }, { passive: true });
   }
 
