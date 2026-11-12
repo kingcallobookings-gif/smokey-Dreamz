@@ -243,6 +243,17 @@ p { margin: 0 0 1em; }
 .strains li { font: 700 1rem var(--font-display); padding: 0.7em 1.2em; border-radius: 14px; background: var(--surface); border: 1px solid var(--border); position: relative; }
 .strains li::before { content: ""; display: inline-block; width: 8px; height: 8px; border-radius: 50%; margin-right: 0.6em; background: var(--green); box-shadow: 0 0 10px var(--green); vertical-align: middle; }
 
+/* ===== Drinks ===== */
+.drinks { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.2rem; align-items: start; }
+.drink-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.6rem; min-width: 0; }
+.drink-card h3 { display: flex; justify-content: space-between; align-items: baseline; gap: 1rem; font-size: 1.5rem; margin-bottom: 0.2rem; }
+.drink-price { font: 800 1.5rem var(--font-display); color: var(--gold); }
+.drink-sub { color: var(--muted); font-size: 0.92rem; margin-bottom: 1rem; }
+.drink-list { list-style: none; padding: 0; margin: 0; font-variant-numeric: tabular-nums; }
+.drink-list li { display: flex; justify-content: space-between; gap: 1rem; padding: 0.5em 0; border-top: 1px solid var(--border); }
+.drink-list li span:last-child { color: var(--gold); font-weight: 600; }
+.drink-list.plain li span:last-child { color: inherit; font-weight: inherit; }
+
 /* ===== Gallery ===== */
 .gallery { display: grid; grid-template-columns: repeat(4, 1fr); grid-auto-rows: 220px; gap: 0.9rem; }
 .gallery figure { margin: 0; border-radius: 18px; overflow: hidden; border: 1px solid var(--border); }
@@ -342,7 +353,7 @@ p { margin: 0 0 1em; }
 
 /* ===== Responsive ===== */
 @media (max-width: 900px) {
-  .two-col, .tiers, .steps, .hero-inner { grid-template-columns: 1fr; }
+  .two-col, .tiers, .steps, .hero-inner, .drinks { grid-template-columns: 1fr; }
   .hero-art { max-width: 420px; transform: none; }
   .gallery { grid-template-columns: 1fr 1fr; grid-auto-rows: 160px; }
   .tier.featured { order: -1; }

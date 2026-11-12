@@ -49,6 +49,7 @@
                    "Cupid's Kush", "GMO", "London Lobster", "Rainbow Sherbet"];
   const MENU = [
     { name: "White Wedding",        cat: "preroll", detail: "Pre-roll in a sealed tube",             price: null, img: "white-wedding" },
+    { name: "Ethos Cookies",        cat: "preroll", detail: "Pre-roll in a sealed tube",             price: null, img: "ethos-cookies" },
     { name: "Fruit Salad",          cat: "preroll", detail: "Pre-roll in a sealed tube",             price: null, img: "fruit-salad" },
     { name: "Captain Crunch",       cat: "preroll", detail: "Pre-roll in a sealed tube",             price: null, img: "captain-crunch" },
     { name: "House pre-rolls",      cat: "preroll", detail: "Cones in clear tubes. Ask what's rolled today", price: null, img: "house-prerolls" },
