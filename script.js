@@ -62,6 +62,8 @@
     { name: "Medibles Lychee",      cat: "edible",  detail: "Full-spectrum gummies · 5 × 30mg = 150mg", price: null, img: "medibles" },
     { name: "Rolo's",               cat: "edible",  detail: "Sativa · 5 × 20mg = 100mg",              price: null, img: "rolos" },
     { name: "Glass bongs",          cat: "gear",    detail: "Percolator, beaker and novelty pieces",  price: null, img: "bongs" },
+    { name: "Rolling trays & glass pipes", cat: "gear", detail: "Printed metal trays and hand-blown spoon pipes", price: null, img: "trays-pipes" },
+    { name: "Alien mug",            cat: "gear",    detail: "Wrap-around psychedelic alien print",    price: null, img: "alien-mug" },
     { name: "RAW Hemp Wick",        cat: "gear",    detail: "Natural hemp and beeswax · 6m",          price: 30,   img: "hemp-wick" },
     { name: "Smoking screens",      cat: "gear",    detail: "5 screens per wallet pack",              price: null, img: "screens" },
   ];
