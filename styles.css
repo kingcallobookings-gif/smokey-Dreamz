@@ -488,3 +488,42 @@ main{overflow-x:hidden}
 .tube:hover:not(.open) .t-cap{transform:rotate(-7deg);transition:transform .35s var(--ease-out)}
 .tube-stage::before{transition:opacity .8s var(--ease-out)}
 .tube-hint{transition:color .3s}
+
+/* ---------- 3D viewer ---------- */
+.viewer3d{position:relative;height:min(78vh,620px);min-height:440px;border-radius:28px;overflow:hidden;margin-bottom:34px;
+  background:radial-gradient(70% 60% at 50% 62%,rgba(124,58,237,.35),transparent 70%),radial-gradient(40% 30% at 50% 88%,rgba(57,255,106,.18),transparent 70%),linear-gradient(180deg,#1a0a2e,#0e0419);
+  border:1px solid rgba(233,213,255,.12);box-shadow:0 40px 80px -30px rgba(0,0,0,.8),inset 0 0 0 1px rgba(57,255,106,.08)}
+.viewer3d canvas{position:absolute;inset:0;width:100%;height:100%;touch-action:pan-y;cursor:grab;z-index:1}
+.viewer3d canvas:active{cursor:grabbing}
+.v-portal{position:absolute;left:50%;top:44%;width:min(70vw,460px);aspect-ratio:1;translate:-50% -50%;border-radius:50%;z-index:0;
+  background:conic-gradient(from 0deg,#39ff6a,#0f9d3a,#b6ff9e,#14532d,#39ff6a,#0f9d3a,#b6ff9e,#39ff6a);
+  -webkit-mask:radial-gradient(circle,transparent 0 40%,#000 42% 60%,transparent 68%);mask:radial-gradient(circle,transparent 0 40%,#000 42% 60%,transparent 68%);
+  filter:blur(10px);opacity:.28;animation:spin 18s linear infinite}
+.v-top{position:absolute;top:18px;left:20px;right:20px;z-index:2;display:flex;align-items:center;gap:12px;pointer-events:none}
+.v-badge{font:800 .72rem Syne,sans-serif;letter-spacing:.2em;padding:6px 10px;border-radius:8px;background:var(--green);color:var(--ink)}
+.v-name{font:400 clamp(1.6rem,4vw,2.4rem) Fraktur,serif;text-shadow:0 0 20px rgba(57,255,106,.4),0 3px 0 var(--ink)}
+.v-bottom{position:absolute;left:0;right:0;bottom:0;z-index:2;padding:16px;display:grid;justify-items:center;gap:10px;
+  background:linear-gradient(0deg,rgba(11,3,18,.85),transparent)}
+.v-picker{display:flex;gap:8px;flex-wrap:wrap;justify-content:center}
+.v-pick{display:inline-flex;align-items:center;gap:8px;font:700 .82rem Syne,sans-serif;padding:8px 13px;border-radius:999px;border:1px solid rgba(233,213,255,.2);
+  background:rgba(26,10,46,.75);color:var(--lilac);backdrop-filter:blur(6px);transition:all .3s var(--ease-out)}
+.v-pick i{width:12px;height:12px;border-radius:50%;background:var(--c);box-shadow:0 0 10px var(--c)}
+.v-pick.on{border-color:var(--green);color:#fff;box-shadow:0 0 18px -4px rgba(57,255,106,.6)}
+.v-open{min-height:46px;padding:11px 26px}
+.v-hint{font:700 .7rem Syne,sans-serif;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);opacity:.7}
+.viewer3d:not(.ready) .v-bottom,.viewer3d:not(.ready) .v-top{opacity:0}
+.panel.no3d .viewer3d,.panel.no3d .shelf-title{display:none}
+.shelf-title{font:800 1.2rem Syne,sans-serif;margin:6px 0 0;text-align:center;color:var(--lilac)}
+@media (max-width:520px){.viewer3d{height:560px}.v-pick{font-size:.74rem;padding:7px 10px}}
+
+/* card shine for 3D tilt */
+.item,.strain,.bar-card{transform-style:preserve-3d;will-change:transform}
+.tilting{transition:transform .12s linear,box-shadow .4s}
+.tilting::after{content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;z-index:3;
+  background:radial-gradient(circle at var(--mx) var(--my),rgba(255,255,255,.14),transparent 45%)}
+
+/* portal warp when switching menu tabs */
+#panels{position:relative}
+#panels.warp::before{content:"";position:absolute;left:50%;top:120px;width:60px;height:60px;translate:-50% -50%;border-radius:50%;z-index:5;pointer-events:none;
+  background:radial-gradient(circle,#b6ff9e,#39ff6a 40%,#0f9d3a 60%,transparent 70%);box-shadow:0 0 60px #39ff6a;animation:warp .7s var(--ease-out) forwards}
+@keyframes warp{0%{transform:scale(.2) rotate(0);opacity:1}60%{opacity:.8}100%{transform:scale(14) rotate(180deg);opacity:0}}

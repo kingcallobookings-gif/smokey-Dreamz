@@ -28,9 +28,9 @@
     preroll: {
       label: "Pre-rolls", title: "Pre-rolls", note: "Tap a tube to pop it open.",
       tubes: [
-        { name: "White Wedding", id: "white-wedding", w: 220, h: 1021, cap: 163, glow: "#ff3b4f" },
-        { name: "Fruit Salad", id: "fruit-salad", w: 220, h: 988, cap: 103, glow: "#3b82f6" },
-        { name: "Ethos Cookies", id: "ethos-cookies", w: 220, h: 1101, cap: 132, glow: "#8b5cf6" },
+        { name: "White Wedding", id: "white-wedding", w: 220, h: 1081, cap: 163, glow: "#ff3b4f" },
+        { name: "Fruit Salad", id: "fruit-salad", w: 220, h: 1048, cap: 103, glow: "#3b82f6" },
+        { name: "Ethos Cookies", id: "ethos-cookies", w: 220, h: 1161, cap: 132, glow: "#8b5cf6" },
         { name: "House pre-rolls", glass: true, w: 220, h: 1000, cap: 110, glow: "#ffcc33" },
       ],
       items: [
@@ -150,7 +150,11 @@
     const body = c.strains
       ? `<div class="strain-wall">${c.strains.map(([n, c1, c2]) => `<div class="card strain" style="--c1:${c1};--c2:${c2}"><span class="jar"></span><h4>${esc(n)}</h4><small>Ask in store</small></div>`).join("")}</div>`
       : c.tubes
-      ? `<div class="rack">${c.tubes.map(tubeHTML).join("")}</div><div class="rack-shelf"></div><p class="rack-note">All pre-rolls: Ask in store for today's contributions.</p><div class="extra-row">${c.items.map((it) => itemCard(it, c.label)).join("")}</div>`
+      ? `<div class="viewer3d" id="viewer3d"><canvas aria-label="3D pre-roll tube. Drag to spin, tap to open."></canvas><span class="v-portal" aria-hidden="true"></span>
+          <div class="v-top"><span class="v-badge">3D</span><span class="v-name"></span></div>
+          <div class="v-bottom"><div class="v-picker"></div><button type="button" class="btn green v-open">Open tube</button><p class="v-hint">Drag to spin · tap the tube to open</p></div></div>
+         <h4 class="shelf-title">On the shelf</h4>
+         <div class="rack">${c.tubes.map(tubeHTML).join("")}</div><div class="rack-shelf"></div><p class="rack-note">All pre-rolls: Ask in store for today's contributions.</p><div class="extra-row">${c.items.map((it) => itemCard(it, c.label)).join("")}</div>`
       : `<div class="carousel" id="car-${k}">${c.items.map((it) => itemCard(it, c.label)).join("")}</div>`;
     const nav = (c.strains || c.tubes) ? "" : `<div class="car-nav"><button class="car-btn" data-car="car-${k}" data-dir="-1" aria-label="Previous">‹</button><button class="car-btn" data-car="car-${k}" data-dir="1" aria-label="Next">›</button></div>`;
     return `<div class="panel${i === 0 ? " active" : ""}" role="tabpanel" id="panel-${k}" aria-labelledby="tab-${k}"><div class="panel-intro"><div><h3>${c.title}</h3><p>${c.note}</p></div>${nav}</div>${body}</div>`;
@@ -159,6 +163,7 @@
     const t = e.target.closest(".tab"); if (!t) return;
     $$(".tab", tabs).forEach((b) => b.setAttribute("aria-selected", String(b === t)));
     $$(".panel", panels).forEach((p) => p.classList.toggle("active", p.id === t.getAttribute("aria-controls")));
+    if (!reduce) { panels.classList.remove("warp"); void panels.offsetWidth; panels.classList.add("warp"); }
     t.scrollIntoView({ behavior: "smooth", block: "nearest", inline: "center" });
   });
   panels.addEventListener("click", (e) => {
@@ -337,6 +342,20 @@
   /* ---------- Reveal on scroll ---------- */
   const io = new IntersectionObserver((ents) => ents.forEach((en) => { if (en.isIntersecting) { en.target.classList.add("in"); io.unobserve(en.target); } }), { threshold: 0.12, rootMargin: "0px 0px -40px 0px" });
   $$(".reveal").forEach((el, i) => { el.style.transitionDelay = `${(i % 3) * 90}ms`; io.observe(el); });
+
+  /* ---------- 3D tilt on product cards (desktop) ---------- */
+  if (!reduce && window.matchMedia("(pointer:fine)").matches) {
+    document.addEventListener("pointermove", (e) => {
+      const card = e.target.closest(".item, .strain, .bar-card");
+      $$(".tilting").forEach((c) => { if (c !== card) { c.classList.remove("tilting"); c.style.transform = ""; } });
+      if (!card) return;
+      const r = card.getBoundingClientRect();
+      const x = (e.clientX - r.left) / r.width - 0.5, y = (e.clientY - r.top) / r.height - 0.5;
+      card.classList.add("tilting");
+      card.style.transform = `perspective(900px) rotateY(${x * 10}deg) rotateX(${-y * 10}deg) translateY(-4px)`;
+      card.style.setProperty("--mx", `${(x + 0.5) * 100}%`); card.style.setProperty("--my", `${(y + 0.5) * 100}%`);
+    }, { passive: true });
+  }
 
   /* ---------- Hero parallax (desktop) ---------- */
   const stage = $(".stage");
